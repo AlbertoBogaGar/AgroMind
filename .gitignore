@@ -1,0 +1,21 @@
+# Backend (Node.js)
+backend/node_modules/
+backend/npm-debug.log
+backend/yarn-error.log
+backend/.env
+
+# Frontend (Vue.js)
+frontend/node_modules/
+frontend/dist/
+frontend/*.log
+
+# Archivos comunes
+.DS_Store    # macOS
+Thumbs.db    # Windows
+
+# IDEs
+.idea/       # JetBrains (WebStorm, PhpStorm, etc.)
+.vscode/     # Visual Studio Code
+
+# Archivos de configuración personales
+*.iml
