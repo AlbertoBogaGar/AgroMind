@@ -3,7 +3,7 @@ backend/node_modules/
 backend/npm-debug.log
 backend/yarn-error.log
 backend/.env*.log
-backend/
+backend/.env
 # Frontend (Vue.js)
 frontend/node_modules/
 frontend/dist/
