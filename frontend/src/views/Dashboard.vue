@@ -1,9 +1,36 @@
 <template>
-  <div>
-    <h1>Bienvenido al Dashboard</h1>
-    <p>Aquí podrás gestionar tu parcela y cultivos.</p>
+  <div class="grid grid-cols-3 grid-rows-3 gap-4 p-6 w-full h-screen">
+    <div class="col-span-2 row-span-2 bg-green-400 p-6 rounded-lg shadow-lg">
+      <h2 class="text-xl font-bold">Información de la Parcela</h2>
+      <p>Ubicación, tamaño, coordenadas...</p>
+    </div>
     
-    <button @click="logout">Cerrar Sesión</button>
+    <div class="bg-red-400 p-6 rounded-lg shadow-lg">
+      <h2 class="text-lg font-bold">Alertas</h2>
+      <p>⚠️ Sin alertas nuevas</p>
+    </div>
+    
+    <div class="bg-yellow-400 p-6 rounded-lg shadow-lg">
+      <h2 class="text-lg font-bold">Recomendaciones</h2>
+      <p>🌱 Riega los tomates mañana.</p>
+    </div>
+    
+    <div class="col-span-2 bg-brown-600 p-6 rounded-lg shadow-lg text-white">
+      <h2 class="text-lg font-bold">Lista de Cultivos</h2>
+      <p>🌽 Maíz, 🍅 Tomates, 🥕 Zanahorias</p>
+    </div>
+    
+    <div class="bg-green-600 p-6 rounded-lg shadow-lg text-white cursor-pointer hover:bg-green-700">
+      <h2 class="text-lg font-bold">➕ Añadir Cultivo</h2>
+    </div>
+    
+    <div class="bg-blue-400 p-6 rounded-lg shadow-lg text-white cursor-pointer hover:bg-blue-500">
+      <h2 class="text-lg font-bold">👤 Perfil</h2>
+    </div>
+    
+    <div class="bg-gray-200 p-6 rounded-lg shadow-lg cursor-pointer hover:bg-gray-300">
+      <h2 class="text-lg font-bold text-black">🔒 Cerrar Sesión</h2>
+    </div>
   </div>
 </template>
 
