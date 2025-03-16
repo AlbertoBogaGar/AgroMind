@@ -16,7 +16,7 @@ const router = createRouter({
   routes
 });
 
-// 🚀 Middleware para proteger rutas
+
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!localStorage.getItem("token"); 
 

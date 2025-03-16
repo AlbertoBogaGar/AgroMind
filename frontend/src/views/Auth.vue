@@ -24,6 +24,7 @@ export default {
           password: this.password
         });
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("tieneParcela", response.data.tieneParcela);
         this.mensaje = "Login exitoso ✅";
 
 
@@ -43,7 +44,7 @@ export default {
           password: this.password
         });
         this.mensaje = "Registro exitoso ✅. Ahora inicia sesión.";
-        this.registrado = false; // Cambia a login después de registrarse
+        this.registrado = false;
       } catch (error) {
         this.mensaje = "Error: " + error.response.data.message;
       }
@@ -55,27 +56,7 @@ export default {
 <template>
   
 
-<!--     <form @submit.prevent="registrado ? register() : login()">
-      <div v-if="registrado">
-        <label>Nombre:</label>
-        <input v-model="nombre" type="text" required />
-      </div>
 
-      <label>Email:</label>
-      <input v-model="email" type="email" required />
-
-      <label>Contraseña:</label>
-      <input v-model="password" type="password" required />
-
-      <button type="submit">
-        {{ registrado ? "Registrarse" : "Iniciar Sesión" }}
-      </button>
-    </form>
-
-    <button @click="toggleForm">
-      {{ registrado ? "¿Ya tienes cuenta? Inicia sesión" : "¿No tienes cuenta? Regístrate" }}
-    </button>
-  </div> -->
   
   <div class="w-full max-w-md p-8 space-y-3 rounded-xl dark:bg-gray-50 dark:text-gray-800">
 	<h1 class="text-2xl font-bold text-center">{{ registrado ? "Registro" : "Iniciar Sesión" }}</h1>
