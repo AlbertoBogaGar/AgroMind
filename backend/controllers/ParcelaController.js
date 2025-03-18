@@ -23,8 +23,8 @@ const obtenerParcela = async (req, res) => {
 
 const registrarParcela = async (req, res) => {
   try {
-    console.log("🔹 Se recibió una petición para registrar una parcela.");
-    console.log("📌 Datos recibidos:", req.body);
+    console.log("Se recibió una petición para registrar una parcela.");
+    console.log("Datos recibidos:", req.body);
 
     const { tamaño, latitud, longitud } = req.body;
 
@@ -39,10 +39,10 @@ const registrarParcela = async (req, res) => {
       tamaño,
     });
 
-    console.log("✅ Parcela registrada en la base de datos:", nuevaParcela);
+    console.log("Parcela registrada en la base de datos:", nuevaParcela);
     res.status(201).json({ message: "Parcela registrada correctamente", parcela: nuevaParcela });
   } catch (error) {
-    console.error("❌ Error al registrar parcela:", error);
+    console.error("Error al registrar parcela:", error);
     res.status(500).json({ message: "Error en el servidor" });
   }
 };
