@@ -1,22 +1,19 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Usuario = require("../models/Usuario");
+const Parcela = require("../models/Parcela");
 
-// REGISTRO DE USUARIO
 exports.register = async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
 
-    // Verificar si el usuario ya existe
     const usuarioExistente = await Usuario.findOne({ where: { email } });
     if (usuarioExistente) {
       return res.status(400).json({ message: "El correo ya está registrado" });
     }
 
-    // Hashear la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Crear usuario
     const usuario = await Usuario.create({
       nombre,
       email,
@@ -34,35 +31,28 @@ exports.register = async (req, res) => {
   }
 };
 
-// LOGIN DE USUARIO
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const usuario = await Usuario.findOne({ where: { email } });
 
-    if (!usuario) {
-      return res
-        .status(400)
-        .json({ message: "Usuario no encontrado en base de datos" });
+    if (!usuario || !(await bcrypt.compare(password, usuario.password))) {
+      return res.status(401).json({ message: "Credenciales incorrectas" });
     }
 
-    const passwordValida = await bcrypt.compare(password, usuario.password);
-    if (!passwordValida) {
-      return res.status(400).json({ message: "Credenciales incorrectas" });
-    }
+    const parcela = await Parcela.findOne({ where: { idUsuario: usuario.id } });
 
-    const token = jwt.sign(
-      { id: usuario.id, email: usuario.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "2h" }
-    );
+    const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
 
-    res.json({ message: "Login exitoso", token });
+    res.json({
+      token,
+      usuario: { id: usuario.id, nombre: usuario.nombre, email: usuario.email },
+      tieneParcela: !!parcela,
+    });
   } catch (error) {
-    console.error("Error detallado:", error);
-    res
-      .status(500)
-      .json({ message: "Error en el servidor", error: error.message });
+    console.log("Error en login", error);
+    res.status(500).json({ message: "Error en el servidor" });
   }
 };
