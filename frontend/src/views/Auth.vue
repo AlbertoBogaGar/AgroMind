@@ -63,21 +63,21 @@ export default {
   <p class="text-center text-red-500">{{ mensaje }}</p>
 	<form @submit.prevent="registrado ? register() : login()"  class="space-y-6">
 		<div v-if="registrado" class="space-y-1 text-sm">
-			<label for="nombre" class="block dark:text-gray-600">nombre</label>
-			<input v-model="nombre" type="text" name="nombre" id="nombre" placeholder="nombre" class="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600">
+			<label for="nombre" class="block ">nombre</label>
+			<input v-model="nombre" type="text" name="nombre" id="nombre" placeholder="nombre" class="w-full px-4 py-3  text-gray-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90]">
 		</div>
 		<div class="space-y-1 text-sm">
-			<label for="email" class="block dark:text-gray-600">Email</label>
-			<input v-model="email" type="email" name="email" id="email" placeholder="email" class="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600">
+			<label for="email" class="block ">Email</label>
+			<input v-model="email" type="email" name="email" id="email" placeholder="email" class="w-full px-4 py-3 text-gray-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90] ">
 		</div>
 		<div class="space-y-1 text-sm">
 			<label for="password" class="block dark:text-gray-600">Contraseña</label>
-			<input v-model="password" type="password" name="password" id="password" placeholder="Password" class="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600">
-			<div class="flex justify-end text-xs dark:text-gray-600">
+			<input v-model="password" type="password" name="password" id="password" placeholder="Password" class="w-full px-4 py-3 text-gray-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90]">
+			<div class="flex justify-end text-xs ">
 				<a rel="noopener noreferrer" href="#">Forgot Password?</a>
 			</div>
 		</div>
-		<button type="submit" class="block w-full p-3 text-center rounded-sm dark:text-gray-50 dark:bg-violet-600">{{ registrado ? "Registrarse" : "Iniciar Sesión" }}</button>
+		<button type="submit" class="block w-full p-3 text-center rounded-sm bg-[#2e9e90]">{{ registrado ? "Registrarse" : "Iniciar Sesión" }}</button>
 	</form>
 	
 
