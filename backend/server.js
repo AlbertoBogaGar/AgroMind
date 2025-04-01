@@ -4,6 +4,12 @@ const cors = require("cors");
 const sequelize = require("./config/database"); 
 const authRoutes = require("./routes/authRoutes");
 const parcelaRoutes = require("./routes/parcelaRoutes");
+const cultivoRoutes = require("./routes/cultivoRoutes");
+const tipoCultivoRoutes = require("./routes/tipoCultivoRoutes");
+const meteorologiaRoutes = require("./routes/meteorologiaRoutes")
+const weatherRoutes = require("./routes/weatherRoutes");
+require("./cron/meteorologiaJob"); // Carga el cron al iniciar el servidor
+
 
 
 const app = express();
@@ -11,6 +17,11 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/parcela", parcelaRoutes);
+app.use("/api/cultivo", cultivoRoutes);
+app.use("/api/tipoCultivo", tipoCultivoRoutes);
+app.use('/api/meteorologia', meteorologiaRoutes);
+app.use("/api/weather", weatherRoutes);
+
 
 app.get("/", (req, res) => {
     res.send("API AgroMind funcionando ");
