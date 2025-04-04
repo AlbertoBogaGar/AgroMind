@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { getCurrentWeather } = require('../controllers/WeatherController');
+const { guardarClimaDiario, getClimaActual } = require('../controllers/WeatherController');
+const authMiddleware = require("../middleware/authMiddleware");
 
-router.get('/current', getCurrentWeather);
+router.get('/daily',authMiddleware, guardarClimaDiario);
+router.get('/current-live',authMiddleware, getClimaActual); // <--- NUEVA RUTA
 
 module.exports = router; 
