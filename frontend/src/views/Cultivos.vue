@@ -102,8 +102,8 @@
       </div>
     </div>
     <div class="p-4">
-      <div class="text-sm text-gray-500 mb-1">Tipo: {{ cultivo.TipoCultivo?.nombre }}</div>
-      <h4 class="font-semibold text-gray-800 mb-2">{{ cultivo.TipoCultivo?.nombre }}</h4>
+      <div class="text-sm text-gray-500 mb-1">Tipo: {{ cultivo.tipoCultivo?.nombre }}</div>
+      <h4 class="font-semibold text-gray-800 mb-2">{{ cultivo.tipoCultivo?.nombre }}</h4>
       <div class="mb-2">
         <div class="text-sm text-gray-500 mb-1">Días para cosecha</div>
         <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
@@ -199,7 +199,7 @@ export default {
     },
     calcularDiasRestantes(cultivo) {
       const fechaSiembra = new Date(cultivo.fechaSiembra);
-      const cicloVida = parseInt(cultivo.TipoCultivo?.cicloVida, 10);
+      const cicloVida = parseInt(cultivo.tipoCultivo?.cicloVida, 10);
       const fechaCosecha = new Date(fechaSiembra);
       fechaCosecha.setDate(fechaSiembra.getDate() + cicloVida);
 
@@ -209,7 +209,7 @@ export default {
     },
     calcularProgreso(cultivo) {
       const fechaSiembra = new Date(cultivo.fechaSiembra);
-      const cicloVida = parseInt(cultivo.TipoCultivo?.cicloVida, 10);
+      const cicloVida = parseInt(cultivo.tipoCultivo?.cicloVida, 10);
       const fechaCosecha = new Date(fechaSiembra);
       fechaCosecha.setDate(fechaSiembra.getDate() + cicloVida);
 

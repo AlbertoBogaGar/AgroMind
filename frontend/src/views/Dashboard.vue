@@ -88,7 +88,7 @@
             <div class="bg-[#2e9e90] rounded-lg p-6 text-white">
               <p class="text-sm font-medium mb-2">{{ parcela.Provincia?.nombre || "Provincia no disponible" }}</p>
               <div class="flex items-end gap-2 mb-2">
-                <h2 class="text-6xl font-bold">{{ meteorologia_actual?.temperatura?? '--' }}ºC</h2>
+                <h2 class="text-6xl font-bold">{{ meteorologia_actual?.temperatura ?? '--' }}ºC</h2>
               </div>
               <p class="mb-4 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-white opacity-75" viewBox="0 0 24 24"
@@ -111,7 +111,7 @@
                   </svg>
                   <div>
                     <p class="text-xs text-gray-500">Humedad</p>
-                    <p class="font-medium">{{meteorologia_actual.humedad}}%</p>
+                    <p class="font-medium">{{ meteorologia_actual.humedad }}%</p>
                   </div>
                 </div>
                 <div class="flex items-center">
@@ -229,75 +229,38 @@
               </div>
             </div> -->
 
-            <!-- Actividades de hoy - Desktop -->
-            <div class="w-1/2 bg-white rounded-lg border border-gray-200 p-4">
-              <div class="flex justify-between items-center mb-4">
-                <h3 class="font-semibold text-gray-800">Actividades de hoy</h3>
-                <a href="#" class="text-[#2e9e90] text-sm font-medium">Ver todas</a>
+            <<!-- Recomendaciones IA - Desktop -->
+              <div class="w-1/2 bg-white rounded-lg border border-gray-200 p-4">
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="font-semibold text-gray-800">Recomendaciones IA</h3>
+                  <a href="#" class="text-[#2e9e90] text-sm font-medium">Ver todas</a>
+                </div>
+
+                <div class="space-y-3" v-if="recomendacionesIA.length && recomendacionesIA">
+
+                  <div v-for="(reco, index) in recomendacionesIA.slice(0,4)" :key="index" class="flex justify-between items-start">
+                    <div class="flex items-start gap-3">
+                      <div class="w-1 h-10 rounded-full" :class="{
+                        'bg-red-500': reco.tipo === 'grave',
+                        'bg-amber-500': reco.tipo === 'media',
+                        'bg-yellow-300': reco.tipo=== 'leve'
+                      }"></div>
+                      <div>
+                        <h4 class="font-medium text-gray-800">{{ reco.titulo }}</h4>
+                        <p class="text-xs text-gray-500">{{ reco.descripcion }}</p>
+                      </div>
+                    </div>
+                    <span class="text-xs font-semibold uppercase" :class="{
+                      'text-red-500': reco.tipo=== 'grave',
+                      'text-amber-500': reco.tipo === 'media',
+                      'text-yellow-400': reco.tipo === 'leve'
+                    }">
+                      {{ reco.tipo }}
+                    </span>
+                  </div>
+                </div>
+                <div v-else class="text-sm text-gray-500">No hay recomendaciones por ahora.</div>
               </div>
-
-              <div class="space-y-3">
-                <!-- Actividad 1 -->
-                <div class="flex justify-between items-center">
-                  <div class="flex items-center gap-3">
-                    <div class="w-1 h-10 bg-[#2e9e90] rounded-full"></div>
-                    <div>
-                      <h4 class="font-medium text-gray-800">Riego de cultivos</h4>
-                      <p class="text-xs text-gray-500">Parcela Norte</p>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-2 text-amber-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                    <span class="text-xs font-medium">7:30 AM</span>
-                    <span class="text-xs text-gray-500">Programado</span>
-                  </div>
-                </div>
-
-                <!-- Actividad 2 -->
-                <div class="flex justify-between items-center">
-                  <div class="flex items-center gap-3">
-                    <div class="w-1 h-10 bg-amber-500 rounded-full"></div>
-                    <div>
-                      <h4 class="font-medium text-gray-800">Plantación de semillas</h4>
-                      <p class="text-xs text-gray-500">Campo Oeste</p>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-2 text-amber-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                    <span class="text-xs font-medium">9:00 AM</span>
-                    <span class="text-xs text-gray-500">Pendiente</span>
-                  </div>
-                </div>
-
-                <!-- Actividad 3 -->
-                <div class="flex justify-between items-center">
-                  <div class="flex items-center gap-3">
-                    <div class="w-1 h-10 bg-red-500 rounded-full"></div>
-                    <div>
-                      <h4 class="font-medium text-gray-800">Cosecha de tomates</h4>
-                      <p class="text-xs text-gray-500">Invernadero 1</p>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-2 text-amber-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                    <span class="text-xs font-medium">10:30 AM</span>
-                    <span class="text-xs text-gray-500">Pendiente</span>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- AI Assistants Section -->
@@ -436,7 +399,7 @@
                 class="bg-white rounded-lg border border-gray-200 overflow-hidden">
                 <div class="p-4">
                   <div class="flex justify-between items-start mb-2">
-                    <h4 class="font-semibold text-gray-800">{{ cultivo.TipoCultivo.nombre }}</h4>
+                    <h4 class="font-semibold text-gray-800">{{ cultivo.tipoCultivo.nombre }}</h4>
                     <span class="px-2 py-1 bg-[#e0f5f3] text-[#2e9e90] text-xs rounded-md">
                       {{ calcularEstadoCultivo(cultivo) }}
                     </span>
@@ -474,7 +437,7 @@
                 </div>
                 <div>
                   <h3 class="font-semibold text-gray-800">Campo agrícola</h3>
-                  <p class="text-sm text-gray-500">{{ parcela.provincium.nombre }}, España • Visualiza tu estado actual
+                  <p class="text-sm text-gray-500">{{ parcela.provincium?.nombre }}, España • Visualiza tu estado actual
                   </p>
                 </div>
                 <button class="ml-auto px-4 py-2 bg-[#2e9e90] text-white rounded-md text-sm font-medium">Ver
@@ -555,11 +518,12 @@ export default {
       horaActual: this.obtenerHoraActual(),
       mostrarModal: false,
       cultivos: [],
+      recomendacionesIA: [],
       meteorologia_actual: {
         temperatura: null,
-        humedad:null,
-        viento:null,
-        estado:''
+        humedad: null,
+        viento: null,
+        estado: '',
       },
     };
   },
@@ -609,7 +573,7 @@ export default {
     },
     calcularEstadoCultivo(cultivo) {
       const fechaSiembra = new Date(cultivo.fechaSiembra);
-      const cicloVidaDias = parseInt(cultivo.TipoCultivo?.cicloVida, 10);
+      const cicloVidaDias = parseInt(cultivo.tipoCultivo?.cicloVida, 10);
 
       if (!fechaSiembra || isNaN(cicloVidaDias)) {
         console.error("Datos inválidos en cultivo:", cultivo);
@@ -627,7 +591,7 @@ export default {
     },
     calcularDiasRestantes(cultivo) {
       const fechaSiembra = new Date(cultivo.fechaSiembra);
-      const cicloVidaDias = parseInt(cultivo.TipoCultivo?.cicloVida, 10);
+      const cicloVidaDias = parseInt(cultivo.tipoCultivo?.cicloVida, 10);
 
       if (!fechaSiembra || isNaN(cicloVidaDias)) return 0;
 
@@ -641,7 +605,7 @@ export default {
     },
     calcularProgresoCosecha(cultivo) {
       const fechaSiembra = new Date(cultivo.fechaSiembra);
-      const cicloVidaDias = parseInt(cultivo.TipoCultivo?.cicloVida, 10);
+      const cicloVidaDias = parseInt(cultivo.tipoCultivo?.cicloVida, 10);
       if (!fechaSiembra || isNaN(cicloVidaDias)) return 0;
       const hoy = new Date();
       const diasPasados = Math.floor((hoy - fechaSiembra) / (1000 * 60 * 60 * 24));
@@ -662,17 +626,32 @@ export default {
       }
     },
     async obtenerClimaDiario() {
-  try {
-    const token = localStorage.getItem("token");
-    await axios.get("http://localhost:5000/api/weather/daily", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    console.log("✅ Clima diario registrado con éxito.");
-  } catch (error) {
-    console.error("❌ Error al registrar clima diario:", error.message);
-  }
-},
+      try {
+        const token = localStorage.getItem("token");
+        await axios.get("http://localhost:5000/api/weather/daily", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        console.log("✅ Clima diario registrado con éxito.");
+      } catch (error) {
+        console.error("❌ Error al registrar clima diario:", error.message);
+      }
+    },
 
+    async obtenerRecomendaciones() {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:5000/api/recomendacion", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        this.recomendacionesIA = response.data.recomendaciones; // 👈 Aquí el cambio clave
+        console.log("📦 Recomendaciones IA recibidas:", this.recomendacionesIA);
+
+      } catch (error) {
+        console.error("Error al obtener recomendaciones IA:", error);
+      }
+    },
     logout() {
       localStorage.removeItem("token");
       localStorage.removeItem("tieneParcela");
@@ -684,6 +663,7 @@ export default {
     await this.obtenerCultivos();
     await this.obtenerMeteorologia();
     await this.obtenerClimaDiario();
+    await this.obtenerRecomendaciones();
   }
 };
 </script>

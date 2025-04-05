@@ -13,7 +13,8 @@ const Cultivo = sequelize.define('Cultivo', {
 
 TipoCultivo.hasMany(Cultivo, { foreignKey: 'idTipoCultivo' });
 Parcela.hasMany(Cultivo, { foreignKey: 'idParcela' });
-Cultivo.belongsTo(TipoCultivo, { foreignKey: 'idTipoCultivo' });
-Cultivo.belongsTo(Parcela, { foreignKey: 'idParcela' });
+Cultivo.belongsTo(Parcela, { foreignKey: 'idParcela', as: 'parcela' });
+Cultivo.belongsTo(TipoCultivo, { foreignKey: 'idTipoCultivo', as: 'tipoCultivo' });
+
 
 module.exports = Cultivo;

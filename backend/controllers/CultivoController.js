@@ -42,7 +42,11 @@ const obtenerCultivos = async (req, res) => {
     const cultivos = await Cultivo.findAll({
       where: { idParcela: parcela.id },
       include: [
-        { model: TipoCultivo, attributes: ["nombre", "cicloVida"] }
+        {
+          model: TipoCultivo,
+          as: 'tipoCultivo',
+          attributes: ["nombre", "cicloVida"]
+        }
       ]
     });
 
