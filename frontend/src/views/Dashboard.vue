@@ -6,62 +6,10 @@
     <!-- Dashboard cuando tiene parcela -->
     <div v-else class="flex h-screen">
       <!-- Sidebar - Visible solo en desktop -->
-      <div class="hidden md:flex w-16 bg-white border-r border-gray-200 h-screen">
-        <div class="flex flex-col items-center h-full">
-          <div class="w-full p-3">
-            <div class="w-10 h-10 bg-[#2e9e90] text-white rounded-lg flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
-                <path d="M12 2a10 10 0 0 1 10 10h-10V2z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </div>
-          </div>
-          <div class="flex flex-col items-center gap-6 mt-6">
-            <button class="w-10 h-10 bg-gray-100 text-[#2e9e90] rounded-lg flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-              </svg>
-            </button>
-            <router-link to="/cultivos"
-              class="w-10 h-10 text-gray-500 rounded-lg flex items-center justify-center hover:bg-gray-100">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
-                <path d="M12 2a10 10 0 0 1 10 10h-10V2z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </router-link>
-
-            <button class="w-10 h-10 text-gray-500 rounded-lg flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
-            </button>
-            <button class="w-10 h-10 text-gray-500 rounded-lg flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
-              </svg>
-            </button>
-          </div>
-          <div class="mt-auto mb-4">
-            <button @click="mostrarModal = true"
-              class="w-10 h-10 bg-[#e0f5f3] text-[#2e9e90] rounded-lg flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-              </svg>
-            </button>
-          </div>
-        </div>
+       <div class="flex">
+       <Sidebar @abrirModal="mostrarModal = true"/>
       </div>
+
 
       <AddCultivoModal v-if="mostrarModal" @close="mostrarModal = false" />
       <!-- Main Content -->
@@ -84,166 +32,31 @@
           </div>
 
           <!-- Weather Card - Mobile Design -->
-          <div class="md:hidden mb-4">
-            <div class="bg-[#2e9e90] rounded-lg p-6 text-white">
-              <p class="text-sm font-medium mb-2">{{ parcela.Provincia?.nombre || "Provincia no disponible" }}</p>
-              <div class="flex items-end gap-2 mb-2">
-                <h2 class="text-6xl font-bold">{{ meteorologia_actual?.temperatura ?? '--' }}ºC</h2>
-              </div>
-              <p class="mb-4 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-white opacity-75" viewBox="0 0 24 24"
-                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
-                </svg>
-                {{ meteorologia_actual.estado }}
-              </p>
-              <p class="text-sm">{{ fechaActual }} - {{ horaActual }}</p>
-            </div>
-
-            <div class="bg-white rounded-lg border border-gray-200 mt-1 p-4">
-              <div class="flex justify-between">
-                <div class="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                      d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 15 5 15a7 7 0 0 0 7 7z">
-                    </path>
-                  </svg>
-                  <div>
-                    <p class="text-xs text-gray-500">Humedad</p>
-                    <p class="font-medium">{{ meteorologia_actual.humedad }}%</p>
-                  </div>
-                </div>
-                <div class="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"></path>
-                    <path d="M9.6 4.6A2 2 0 1 1 11 8H2"></path>
-                    <path d="M12.6 19.4A2 2 0 1 0 14 16H2"></path>
-                  </svg>
-                  <div>
-                    <p class="text-xs text-gray-500">Viento</p>
-                    <p class="font-medium">{{ meteorologia_actual.viento }} km/h</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+           <div class=" md:hidden gap-4 mb-6">
+          <WeatherCard :meteorologia="meteorologia_actual"
+            :provincia="parcela?.provincium?.nombre || 'Provincia desconocida'" :fecha="fechaActual"
+            :hora="horaActual" />
           </div>
-          <!-- Weather Card - Mobile Design -->
-          <!--<div class="md:hidden mb-4">
-            <WeatherWidget />
-          </div>-->
+        
 
-          <!-- Actividades de hoy - Mobile -->
+          <!-- Recomendaciones de hoy - Mobile -->
           <div class="md:hidden mb-6">
-            <div class="flex justify-between items-center mb-4">
-              <h3 class="text-lg font-semibold text-gray-800">Actividades de hoy</h3>
-              <a href="#" class="text-[#2e9e90] text-sm font-medium">Ver todas</a>
-            </div>
 
-            <div class="space-y-2">
-              <!-- Actividad 1 -->
-              <div class="bg-white rounded-lg p-4 border border-gray-200 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                  <div class="w-1 h-12 bg-[#2e9e90] rounded-full"></div>
-                  <div>
-                    <h4 class="font-medium text-gray-800">Riego de cultivos</h4>
-                    <p class="text-sm text-gray-500">Parcela Norte</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2 text-amber-600">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  <span class="text-sm font-medium">7:30 AM</span>
-                </div>
-              </div>
-
-              <!-- Actividad 2 -->
-              <div class="bg-white rounded-lg p-4 border border-gray-200 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                  <div class="w-1 h-12 bg-amber-500 rounded-full"></div>
-                  <div>
-                    <h4 class="font-medium text-gray-800">Plantación de semillas</h4>
-                    <p class="text-sm text-gray-500">Campo Oeste</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2 text-amber-600">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  <span class="text-sm font-medium">9:00 AM</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Weather and Activities - Desktop Design -->
-          <div class="hidden md:flex gap-4 mb-6">
-            <!-- Weather Card -->
-            <div class="w-1/2 bg-[#2e9e90] rounded-lg p-6 text-white">
-              <p class="text-sm font-medium mb-2">{{ parcela.provincium?.nombre || "Provincia no disponible" }}</p>
-              <div class="flex items-end gap-2 mb-2">
-                <h2 class="text-6xl font-bold">{{ meteorologia_actual?.temperatura ?? '--' }}ºC</h2>
-              </div>
-              <p class="mb-4">{{ meteorologia_actual.estado }}</p>
-              <p class="text-sm">{{ fechaActual }} - {{ horaActual }}</p>
-
-              <div class="flex justify-between mt-8">
-                <div class="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-200" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                      d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 15 5 15a7 7 0 0 0 7 7z">
-                    </path>
-                  </svg>
-                  <div>
-                    <p class="text-xs text-blue-100">Humedad</p>
-                    <p class="font-medium">{{ meteorologia_actual.humedad }}%</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-200" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"></path>
-                    <path d="M9.6 4.6A2 2 0 1 1 11 8H2"></path>
-                    <path d="M12.6 19.4A2 2 0 1 0 14 16H2"></path>
-                  </svg>
-                  <div>
-                    <p class="text-xs text-blue-100">Viento</p>
-                    <p class="font-medium">{{ meteorologia_actual.viento }} km/h</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Weather and Activities - Desktop Design -->
-            <!--<div class="hidden md:flex gap-4 mb-6">-->
-            <!-- Weather Card -->
-            <!-- <div class="w-1/2">
-                <WeatherWidget />
-              </div>
-            </div> -->
-
-            <<!-- Recomendaciones IA - Desktop -->
-              <div class="w-1/2 bg-white rounded-lg border border-gray-200 p-4">
+            <div class="w bg-white rounded-lg border border-gray-200 p-4">
                 <div class="flex justify-between items-center mb-4">
-                  <h3 class="font-semibold text-gray-800">Recomendaciones IA</h3>
+                  <h3 class="font-semibold text-gray-800">Recomendaciones</h3>
                   <a href="#" class="text-[#2e9e90] text-sm font-medium">Ver todas</a>
                 </div>
 
                 <div class="space-y-3" v-if="recomendacionesIA.length && recomendacionesIA">
 
-                  <div v-for="(reco, index) in recomendacionesIA.slice(0,4)" :key="index" class="flex justify-between items-start">
+                  <div v-for="(reco, index) in recomendacionesIA.slice(0, 4)" :key="index"
+                    class="flex justify-between items-start">
                     <div class="flex items-start gap-3">
                       <div class="w-1 h-10 rounded-full" :class="{
-                        'bg-red-500': reco.tipo === 'grave',
-                        'bg-amber-500': reco.tipo === 'media',
-                        'bg-yellow-300': reco.tipo=== 'leve'
+                        'bg-red-500': reco.tipo === 'Grave',
+                        'bg-amber-500': reco.tipo === 'Media',
+                        'bg-yellow-300': reco.tipo === 'Leve'
                       }"></div>
                       <div>
                         <h4 class="font-medium text-gray-800">{{ reco.titulo }}</h4>
@@ -251,9 +64,55 @@
                       </div>
                     </div>
                     <span class="text-xs font-semibold uppercase" :class="{
-                      'text-red-500': reco.tipo=== 'grave',
-                      'text-amber-500': reco.tipo === 'media',
-                      'text-yellow-400': reco.tipo === 'leve'
+                      'text-red-500': reco.tipo === 'Grave',
+                      'text-amber-500': reco.tipo === 'Media',
+                      'text-yellow-400': reco.tipo === 'Leve'
+                    }">
+                      {{ reco.tipo }}
+                    </span>
+                  </div>
+                </div>
+                <div v-else class="text-sm text-gray-500">No hay recomendaciones por ahora.</div>
+              </div>
+          </div>
+
+          <!-- Weather and Activities - Desktop Design -->
+          <div class="hidden md:flex gap-4 mb-6">
+            <div class="w-1/2">
+            <!-- Weather Card -->
+            <WeatherCard :meteorologia="meteorologia_actual"
+              :provincia="parcela?.provincium?.nombre || 'Provincia desconocida'" :fecha="fechaActual"
+              :hora="horaActual" />
+              </div>
+            <!-- Weather Card -->
+
+
+            <<!-- Recomendaciones IA - Desktop -->
+              <div class="w-1/2 bg-white rounded-lg border border-gray-200 p-4">
+                <div class="flex justify-between items-center ">
+                  <h3 class="font-semibold text-gray-800">Recomendaciones</h3>
+                  <a href="#" class="text-[#2e9e90] text-sm font-medium">Ver todas</a>
+                </div>
+
+                <div class="space-y-3" v-if="recomendacionesIA.length && recomendacionesIA">
+
+                  <div v-for="(reco, index) in recomendacionesIA.slice(0, 4)" :key="index"
+                    class="flex justify-between items-start">
+                    <div class="flex items-start gap-3">
+                      <div class="w-1 h-10 rounded-full" :class="{
+                        'bg-red-500': reco.tipo === 'Grave',
+                        'bg-amber-500': reco.tipo === 'Media',
+                        'bg-yellow-300': reco.tipo === 'Leve'
+                      }"></div>
+                      <div>
+                        <h4 class="font-medium text-gray-800">{{ reco.titulo }}</h4>
+                        <p class="text-xs text-gray-500">{{ reco.descripcion }}</p>
+                      </div>
+                    </div>
+                    <span class="text-xs font-semibold uppercase" :class="{
+                      'text-red-500': reco.tipo === 'Grave',
+                      'text-amber-500': reco.tipo === 'Media',
+                      'text-yellow-400': reco.tipo === 'Leve'
                     }">
                       {{ reco.tipo }}
                     </span>
@@ -264,14 +123,14 @@
           </div>
 
           <!-- AI Assistants Section -->
-          <div class="mb-6">
+         <!--  <div class="mb-6">
             <div class="flex justify-between items-center mb-4">
               <h3 class="text-xl font-semibold text-gray-800">Asistentes IA</h3>
               <a href="#" class="text-[#2e9e90] text-sm font-medium">Ver todos</a>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!-- Card 1 -->
+             
               <div class="bg-white rounded-lg p-4 border border-gray-200">
                 <div class="flex gap-4 mb-4">
                   <div class="w-10 h-10 bg-[#e0f5f3] rounded-full flex items-center justify-center">
@@ -299,7 +158,7 @@
                 </div>
               </div>
 
-              <!-- Card 2 -->
+         
               <div class="bg-white rounded-lg p-4 border border-gray-200">
                 <div class="flex gap-4 mb-4">
                   <div class="w-10 h-10 bg-[#e0f5f3] rounded-full flex items-center justify-center">
@@ -325,7 +184,7 @@
                 </div>
               </div>
 
-              <!-- Card 3 -->
+              
               <div class="bg-white rounded-lg p-4 border border-gray-200">
                 <div class="flex gap-4 mb-4">
                   <div class="w-10 h-10 bg-[#e0f5f3] rounded-full flex items-center justify-center">
@@ -354,7 +213,7 @@
                 </div>
               </div>
 
-              <!-- Card 4 -->
+              
               <div class="bg-white rounded-lg p-4 border border-gray-200">
                 <div class="flex gap-4 mb-4">
                   <div class="w-10 h-10 bg-[#e0f5f3] rounded-full flex items-center justify-center">
@@ -385,7 +244,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Mis cultivos - Solo desktop -->
           <div class="hidden md:block mb-6">
@@ -445,9 +304,16 @@
               </div>
             </div>
           </div>
+          <button
+  @click="logout"
+  class="text-sm text-gray-500 hover:underline mt-4"
+>
+  Cerrar sesión
+</button>
+
         </div>
 
-        <!-- Bottom Navigation Bar - Visible solo en mobile -->
+        
         <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-16">
           <div class="grid grid-cols-4 h-full">
             <button class="flex flex-col items-center justify-center text-[#2e9e90]">
@@ -504,12 +370,14 @@
 import ParcelaModal from "../components/ParcelaModal.vue";
 import AddCultivoModal from "../components/AddCultivoModal.vue";
 import axios from "axios";
+import WeatherCard from "@/components/WeatherCard.vue";
+import Sidebar from "@/components/Sidebar.vue";
 
 
 
 export default {
   name: "Dashboard",
-  components: { ParcelaModal, AddCultivoModal },
+  components: { ParcelaModal, AddCultivoModal, WeatherCard, Sidebar },
   data() {
     return {
       tieneParcela: localStorage.getItem("tieneParcela") === "true",
@@ -659,11 +527,11 @@ export default {
     }
   },
   async created() {
+    await this.obtenerRecomendaciones();
     await this.obtenerParcela();
     await this.obtenerCultivos();
     await this.obtenerMeteorologia();
     await this.obtenerClimaDiario();
-    await this.obtenerRecomendaciones();
   }
 };
 </script>

@@ -73,7 +73,6 @@ const MeteorologiaProvincia = sequelize.define(
   }
 );
 
-// Relaciones
-MeteorologiaProvincia.belongsTo(Provincia, { foreignKey: "idProvincia" });
+
 
 module.exports = MeteorologiaProvincia;

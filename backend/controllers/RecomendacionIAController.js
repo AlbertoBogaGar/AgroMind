@@ -27,16 +27,19 @@ const obtenerRecomendaciones = async (req, res) => {
     // Obtener clima del día según la provincia de la parcela
     const hoy = new Date().toISOString().split("T")[0];
     const existentes = await Recomendaciones.findAll({
-      where: { fechaGeneracion: hoy },
+      where: {
+        fechaGeneracion: hoy,
+        idUsuario: idUsuario // 🔥 aquí filtramos por usuario directamente
+      },
       include: {
         model: Cultivo,
         include: {
-          model: Parcela,
-          as: "parcela",
-          where: { idUsuario }
+          model: TipoCultivo,
+          as: "tipoCultivo"
         }
       }
     });
+    
     if (existentes.length > 0) {
       return res.json({ recomendaciones: existentes });
     }
@@ -54,6 +57,7 @@ const obtenerRecomendaciones = async (req, res) => {
       recomendaciones.map(r =>
         Recomendaciones.create({
           idCultivo: r.idCultivo,
+          idUsuario: idUsuario, // ✅ se guarda el usuario también
           fechaGeneracion: hoy,
           tipo: r.tipo,
           titulo: r.titulo,
@@ -61,12 +65,36 @@ const obtenerRecomendaciones = async (req, res) => {
         })
       )
     );
+    
 
-    res.json(registros);
+    res.json({ recomendaciones: registros });
   } catch (error) {
     console.error("❌ Error al generar recomendaciones IA:", error.message);
     res.status(500).json({ error: "Error al generar recomendaciones IA" });
   }
 };
+const obtenerRecomendacionesPorCultivo = async (req, res) => {
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const idUsuario = decoded.id;
 
-module.exports = { obtenerRecomendaciones };
+    const { idCultivo } = req.params;
+    const hoy = new Date().toISOString().split("T")[0];
+
+    const recomendaciones = await Recomendaciones.findAll({
+      where: {
+        idUsuario,
+        idCultivo,
+        fechaGeneracion: hoy
+      }
+    });
+
+    res.json({ recomendaciones });
+  } catch (error) {
+    console.error("❌ Error al obtener recomendaciones del cultivo:", error.message);
+    res.status(500).json({ error: "Error al obtener recomendaciones" });
+  }
+};
+
+module.exports = { obtenerRecomendaciones,obtenerRecomendacionesPorCultivo };

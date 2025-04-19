@@ -8,7 +8,8 @@ const cultivoRoutes = require("./routes/cultivoRoutes");
 const tipoCultivoRoutes = require("./routes/tipoCultivoRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
 const recomendacionRoutes = require("./routes/recomendacionRoutes");
-
+const asistente = require("./routes/asistenteRoutes")
+require("./models/associations");
 
 
 
@@ -21,6 +22,7 @@ app.use("/api/cultivo", cultivoRoutes);
 app.use("/api/tipoCultivo", tipoCultivoRoutes);
 app.use("/api/weather", weatherRoutes);
 app.use("/api/recomendacion", recomendacionRoutes);
+app.use("/api/asistente",asistente);
 
 
 app.get("/", (req, res) => {

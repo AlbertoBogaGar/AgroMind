@@ -1,10 +1,10 @@
 <template>
     <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 class="text-lg font-bold mb-4 text-center">🌱 Añadir Cultivo</h2>
+        <h2 class="text-lg font-bold mb-4 text-center">🌱 Añadir cultivo</h2>
   
         <!-- Selección de Tipo de Cultivo -->
-        <label class="block text-sm font-medium text-black">Tipo de Cultivo:</label>
+        <label class="block text-sm font-medium text-black">Tipo de cultivo:</label>
         <select v-model="idTipoCultivo" class="border p-2 w-full rounded mb-2 text-gray-600">
           <option disabled value="">Selecciona un tipo de cultivo</option>
           <option v-for="tipo in tiposCultivo" :key="tipo.id" :value="tipo.id">
@@ -13,7 +13,7 @@
         </select>
   
         <!-- Fecha de Siembra -->
-        <label class="block text-sm font-medium text-black">Fecha de Siembra:</label>
+        <label class="block text-sm font-medium text-black">Fecha de siembra:</label>
         <input v-model="fechaSiembra" type="date" class="border p-2 w-full rounded mb-2 text-gray-600" />
   
         <!-- Estado -->
@@ -25,7 +25,7 @@
   
         <!-- Botones -->
         <button @click="añadirCultivo" class="bg-green-600 text-white px-4 py-2 mt-2 rounded w-full hover:bg-green-700">
-           Añadir Cultivo
+           Añadir cultivo
         </button>
         <button @click="$emit('close')" class="bg-gray-400 text-white px-4 py-2 mt-2 rounded w-full hover:bg-gray-500">
           Cancelar

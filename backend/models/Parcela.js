@@ -12,8 +12,6 @@ const Parcela = sequelize.define("parcela", {
     tamaño: { type: DataTypes.FLOAT, allowNull: false }
 }, {tableName:"parcela", timestamps: false });
 
-Usuario.hasOne(Parcela, { foreignKey: "idUsuario", onDelete: "CASCADE" });
-Parcela.belongsTo(Usuario, { foreignKey: "idUsuario" });
-Parcela.belongsTo(Provincia, { foreignKey: "idProvincia" });
+
 
 module.exports = Parcela;

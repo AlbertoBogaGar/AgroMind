@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
-const Cultivo = require("./Cultivo"); // Asegúrate de tener este modelo definido
+const Cultivo = require("./Cultivo");
 
 const Recomendaciones = sequelize.define(
   "recomendaciones",
@@ -17,6 +17,11 @@ const Recomendaciones = sequelize.define(
         model: Cultivo,
         key: "id",
       },
+    },
+    idUsuario: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      // Si tienes un modelo Usuario: references: { model: Usuario, key: "id" }
     },
     fechaGeneracion: {
       type: DataTypes.DATEONLY,
@@ -41,7 +46,6 @@ const Recomendaciones = sequelize.define(
   }
 );
 
-// Relaciones
-Recomendaciones.belongsTo(Cultivo, { foreignKey: "idCultivo" });
+
 
 module.exports = Recomendaciones;

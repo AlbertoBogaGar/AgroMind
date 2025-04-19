@@ -56,6 +56,23 @@ const obtenerCultivos = async (req, res) => {
     res.status(500).json({ message: "Error en el servidor" });
   }
 };
+const obtenerCultivoPorId = async (req, res) => {
+  try {
+    const cultivo = await Cultivo.findByPk(req.params.id, {
+      include: [
+        { model: TipoCultivo, as: 'tipoCultivo' }, // 👈 esto es clave
+        { model: Parcela }
+      ]
+    });
+
+    if (!cultivo) return res.status(404).json({ error: "Cultivo no encontrado" });
+    res.json(cultivo);
+  } catch (error) {
+    console.error("Error al obtener cultivo:", error.message);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
 
 
-module.exports = {obtenerCultivos,crearCultivo}
+
+module.exports = {obtenerCultivos,crearCultivo,obtenerCultivoPorId}

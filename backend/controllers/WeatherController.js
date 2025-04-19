@@ -91,8 +91,37 @@ const getClimaActual = async (req, res) => {
       res.status(500).json({ error: 'Error al guardar clima diario' });
     }
   };
+
+  const getSolInfo = async (req, res) => {
+    try {
+      const idProvincia = req.params.idProvincia;
+      const hoy = new Date().toISOString().split('T')[0];
+  
+      const datos = await Meteorologia.findOne({
+        where: {
+          idProvincia,
+          fecha: hoy
+        },
+        attributes: ['salida_sol', 'puesta_sol']
+      });
+  
+      if (!datos) {
+        return res.status(404).json({ error: 'Datos no encontrados para hoy.' });
+      }
+  
+      res.json({
+        salidaSol: datos.salida_sol,
+        puestaSol: datos.puesta_sol
+      });
+    } catch (error) {
+      console.error("❌ Error al obtener info del sol:", error.message);
+      res.status(500).json({ error: "Error interno del servidor" });
+    }
+  };
+  
+  
   
 
 module.exports = {
-    guardarClimaDiario,getClimaActual
+    guardarClimaDiario,getClimaActual,getSolInfo
 }; 

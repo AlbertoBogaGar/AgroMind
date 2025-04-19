@@ -8,7 +8,7 @@
           <path d="M12 2a10 10 0 0 1 10 10h-10V2z"></path>
           <circle cx="12" cy="12" r="3"></circle>
         </svg>
-        Registra tu Parcela
+        Registra tu parcela
       </h2>
 
       <div class="space-y-4">
