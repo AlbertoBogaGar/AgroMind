@@ -46,6 +46,4 @@ const Recomendaciones = sequelize.define(
   }
 );
 
-
-
 module.exports = Recomendaciones;

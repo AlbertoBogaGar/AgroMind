@@ -11,9 +11,9 @@ Chart.register(...registerables);
 export default {
   name: "SolGrafico",
   props: {
-    salidaSol: String,     // formato HH:mm
-    puestaSol: String,     // formato HH:mm
-    horaActual: String     // formato HH:mm
+    salidaSol: String,     
+    puestaSol: String,     
+    horaActual: String     
   },
   mounted() {
     if (this.salidaSol && this.puestaSol && this.horaActual) {
@@ -34,17 +34,17 @@ export default {
     getColorScheme(actual, salida, puesta) {
       if (actual < salida) {
         return {
-          borderColor: "#94a3b8", // gris amanecer
+          borderColor: "#94a3b8", 
           backgroundColor: "rgba(148, 163, 184, 0.2)"
         };
       } else if (actual > puesta) {
         return {
-          borderColor: "#334155", // gris noche
+          borderColor: "#334155", 
           backgroundColor: "rgba(51, 65, 85, 0.2)"
         };
       } else {
         return {
-          borderColor: "#facc15", // sol
+          borderColor: "#facc15",
           backgroundColor: "rgba(250, 204, 21, 0.2)"
         };
       }

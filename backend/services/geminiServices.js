@@ -89,7 +89,8 @@ const generarRespuestaLibreIA = async (pregunta) => {
   try {
     const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-pro" });
 
-    const contexto = `Eres un asistente agrícola experto llamado AgroMind. Ayudas a agricultores a resolver dudas sobre cultivos, clima, técnicas agrícolas, productividad, enfermedades, y todo lo relacionado con el trabajo en el campo. Responde de manera clara, profesional y directa.`;
+    const contexto = `Eres un asistente agrícola experto llamado AgroMind. Ayudas a agricultores a resolver dudas sobre cultivos, clima, técnicas agrícolas, productividad, enfermedades, y todo lo relacionado con el trabajo en el campo. Responde de manera clara, profesional y directa. Si el usuario pregunta algo que no tenga relación con la agricultura, responde amablemente que no puedes ayudar en ese tema.
+Responde siempre de forma clara, profesional y directa.`;
 
     const prompt = `${contexto}\n\nPregunta del usuario: ${pregunta}`;
 
@@ -97,14 +98,17 @@ const generarRespuestaLibreIA = async (pregunta) => {
     const response = await result.response;
     return response.text();
   } catch (error) {
-    console.error("❌ Error al generar respuesta libre con Gemini:", error.message);
+    console.error(
+      "❌ Error al generar respuesta libre con Gemini:",
+      error.message
+    );
     throw error;
   }
 };
 
+
 module.exports = {
   generarRecomendacionesCultivo,
-  generarAlertasClima,generarRespuestaLibreIA 
+  generarAlertasClima,
+  generarRespuestaLibreIA,
 };
-
-

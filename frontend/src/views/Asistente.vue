@@ -1,12 +1,14 @@
 <template>
     <div class="flex w-full h-screen bg-gray-50">
-      <Sidebar />
+      <Sidebar @abrirModal="mostrarModal = true" />
+      <AddCultivoModal v-if="mostrarModal" @close="mostrarModal = false" />
       <div class="flex-1 p-6 overflow-y-auto">
         <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2">
           <i class="i-lucide-zap text-green-600"></i>
           Recomendaciones IA
         </h1>
         <p class="text-gray-600 mb-6">Pregúntame sobre tus cultivos, clima o técnicas agrícolas.</p>
+        <SidebarMobile/>
   
         <div class="bg-white rounded-lg shadow p-4 mb-6">
           <input
@@ -33,16 +35,21 @@
   </template>
   
   <script>
-  import Sidebar from '@/components/Sidebar.vue';
+  import AddCultivoModal from '@/components/AddCultivoModal.vue';
+import Sidebar from '@/components/Sidebar.vue';
+import SidebarMobile from '@/components/SidebarMobile.vue';
   import axios from 'axios';
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
   
   export default {
     name: 'AsistenteIA',
-    components: { Sidebar },
+    components: { Sidebar,SidebarMobile,AddCultivoModal },
     data() {
       return {
         pregunta: '',
-        respuesta: ''
+        respuesta: '',
+        mostrarModal:false
       };
     },
     methods: {
@@ -50,12 +57,12 @@
         if (!this.pregunta.trim()) return;
         try {
           const token = localStorage.getItem('token');
-          const res = await axios.post('http://localhost:5000/api/asistente/preguntar', { pregunta: this.pregunta }, {
+          const res = await axios.post(`${BASE_URL}api/asistente/preguntar`, { pregunta: this.pregunta }, {
             headers: { Authorization: `Bearer ${token}` }
           });
           this.respuesta = res.data.respuesta;
         } catch (error) {
-          console.error('❌ Error al consultar a Gemini:', error);
+          console.error('Error al consultar a Gemini:', error);
           this.respuesta = 'Hubo un problema al obtener la respuesta.';
         }
       }

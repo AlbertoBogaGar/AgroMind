@@ -35,8 +35,7 @@ const registrarParcela = async (req, res) => {
       return res.status(400).json({ message: "Todos los campos son obligatorios." });
     }
 
-/*     const idUsuario = 1; 
-    const idProvincia = 1;  */
+
 
     const nuevaParcela = await Parcela.create({
       idUsuario,
@@ -54,4 +53,29 @@ const registrarParcela = async (req, res) => {
   }
 };
 
-module.exports = { obtenerParcela, registrarParcela };
+const actualizarUbicacionParcela = async (req, res) => {
+  try {
+    const idUsuario = req.usuario.id;
+    const { latitud, longitud } = req.body;
+
+    if (!latitud || !longitud) {
+      return res.status(400).json({ message: "Latitud y longitud son requeridas." });
+    }
+
+    const parcela = await Parcela.findOne({ where: { idUsuario } });
+    if (!parcela) {
+      return res.status(404).json({ message: "Parcela no encontrada para este usuario." });
+    }
+
+    parcela.latitud = latitud;
+    parcela.longitud = longitud;
+    await parcela.save();
+
+    res.json({ message: "Ubicación de la parcela actualizada correctamente.", parcela });
+  } catch (error) {
+    console.error("❌ Error al actualizar ubicación de parcela:", error.message);
+    res.status(500).json({ message: "Error al actualizar ubicación." });
+  }
+};
+
+module.exports = { obtenerParcela, registrarParcela,actualizarUbicacionParcela };

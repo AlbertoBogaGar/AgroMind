@@ -18,7 +18,7 @@ const getClimaActual = async (req, res) => {
   
       const current = response.data.current;
   
-      // Interpretar estado del cielo según la nubosidad
+
       let estado;
       const nubosidad = current.cloud_cover;
       if (nubosidad <= 25) estado = 'Soleado';
@@ -50,7 +50,7 @@ const getClimaActual = async (req, res) => {
   
       const hoy = new Date().toISOString().split('T')[0];
   
-      // ✅ Verificar si ya existen datos para hoy
+     
       const existe = await Meteorologia.findOne({
         where: {
           idProvincia: parcela.idProvincia,
@@ -62,7 +62,7 @@ const getClimaActual = async (req, res) => {
         return res.status(200).json({ mensaje: '⏩ Clima diario ya registrado.' });
       }
   
-      // ⬇️ Si no existe, hacer petición y guardar
+      
       const { latitud, longitud } = parcela;
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,daylight_duration,sunshine_duration,showers_sum,precipitation_hours,wind_speed_10m_max,precipitation_probability_max,relative_humidity_2m_mean&forecast_days=1&timezone=auto`;
   
@@ -85,9 +85,9 @@ const getClimaActual = async (req, res) => {
         duracion_sol: daily.sunshine_duration[0]
       });
   
-      res.status(201).json({ mensaje: '✅ Clima diario guardado correctamente.' });
+      res.status(201).json({ mensaje: 'Clima diario guardado correctamente.' });
     } catch (error) {
-      console.error('❌ Error guardando clima diario:', error.message);
+      console.error('Error guardando clima diario:', error.message);
       res.status(500).json({ error: 'Error al guardar clima diario' });
     }
   };
@@ -114,7 +114,7 @@ const getClimaActual = async (req, res) => {
         puestaSol: datos.puesta_sol
       });
     } catch (error) {
-      console.error("❌ Error al obtener info del sol:", error.message);
+      console.error("Error al obtener info del sol:", error.message);
       res.status(500).json({ error: "Error interno del servidor" });
     }
   };

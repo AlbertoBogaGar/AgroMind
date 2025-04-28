@@ -50,6 +50,15 @@
             <path d="M3 8h18M3 16h18"></path>
           </svg>
         </router-link>
+        <!-- PERFIL -->
+        <router-link to="/perfil" class="w-10 h-10 rounded-lg flex items-center justify-center"
+          :class="$route.path === '/perfil' ? 'bg-[#2e9e90] text-white' : 'text-gray-500 hover:bg-gray-100'">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-3-3.87M4 21v-2a4 4 0 0 1 3-3.87M16 3.13a4 4 0 1 1-8 0"></path>
+          </svg>
+        </router-link>
+
       </div>
 
       <div class="mt-auto mb-4">

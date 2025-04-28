@@ -12,11 +12,11 @@ const obtenerRecomendaciones = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const idUsuario = decoded.id;
 
-    // Obtener parcela del usuario
+ 
     const parcela = await Parcela.findOne({ where: { idUsuario } });
     if (!parcela) return res.status(404).json({ error: "Parcela no encontrada" });
 
-    // Obtener cultivos asociados a esa parcela
+   
     const cultivos = await Cultivo.findAll({
       where: { idParcela: parcela.id },
       include: { model: TipoCultivo, as: "tipoCultivo" }
@@ -24,12 +24,12 @@ const obtenerRecomendaciones = async (req, res) => {
 
     if (cultivos.length === 0) return res.status(404).json({ error: "No hay cultivos" });
 
-    // Obtener clima del día según la provincia de la parcela
+
     const hoy = new Date().toISOString().split("T")[0];
     const existentes = await Recomendaciones.findAll({
       where: {
         fechaGeneracion: hoy,
-        idUsuario: idUsuario // 🔥 aquí filtramos por usuario directamente
+        idUsuario: idUsuario 
       },
       include: {
         model: Cultivo,
@@ -49,15 +49,15 @@ const obtenerRecomendaciones = async (req, res) => {
 
     if (!clima) return res.status(404).json({ error: "No hay datos del clima" });
 
-    // Preparar datos para Gemini
+   
     const recomendaciones = await generarRecomendacionesCultivo(cultivos, clima);
 
-    // Guardar y devolver
+  
     const registros = await Promise.all(
       recomendaciones.map(r =>
         Recomendaciones.create({
           idCultivo: r.idCultivo,
-          idUsuario: idUsuario, // ✅ se guarda el usuario también
+          idUsuario: idUsuario,
           fechaGeneracion: hoy,
           tipo: r.tipo,
           titulo: r.titulo,
@@ -69,7 +69,7 @@ const obtenerRecomendaciones = async (req, res) => {
 
     res.json({ recomendaciones: registros });
   } catch (error) {
-    console.error("❌ Error al generar recomendaciones IA:", error.message);
+    console.error("Error al generar recomendaciones IA:", error.message);
     res.status(500).json({ error: "Error al generar recomendaciones IA" });
   }
 };
@@ -92,7 +92,7 @@ const obtenerRecomendacionesPorCultivo = async (req, res) => {
 
     res.json({ recomendaciones });
   } catch (error) {
-    console.error("❌ Error al obtener recomendaciones del cultivo:", error.message);
+    console.error("Error al obtener recomendaciones del cultivo:", error.message);
     res.status(500).json({ error: "Error al obtener recomendaciones" });
   }
 };

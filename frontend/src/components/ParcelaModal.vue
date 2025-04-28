@@ -15,24 +15,30 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Tamaño (m²):</label>
           <input v-model="tamaño" type="number"
-            class="w-full px-3 py-2 text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90] "
+            class="w-full px-3 py-2 text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90]"
             placeholder="Ejemplo: 500" />
         </div>
 
+        <!-- Provincia con Autocompletado -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Provincia:</label>
-          <input v-model="provinciaBusqueda" @input="filtrarProvincias"
+          <input 
+            v-model="provinciaBusqueda"
+            list="listaProvincias"
+            @change="asignarProvinciaSeleccionada"
             class="w-full px-3 py-2 border text-gray-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90]"
-            placeholder="Busca tu provincia" />
+            placeholder="Busca tu provincia"
+          />
+          <datalist id="listaProvincias">
+            <option 
+              v-for="prov in provincias" 
+              :key="prov.id" 
+              :value="prov.nombre">
+            </option>
+          </datalist>
         </div>
 
-        <select v-model="idProvincia" class="border p-2 w-full rounded mb-2 text-black">
-          <option disabled value="">Selecciona una provincia</option>
-          <option v-for="p in provinciasFiltradas" :key="p.id" :value="p.id">
-            {{ p.nombre }}
-          </option>
-        </select>
-
+        <!-- Ubicación -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Ubicación en Google Maps:</label>
           <div class="flex gap-2">
@@ -70,10 +76,12 @@
 
 <script>
 import axios from "axios";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 
 export default {
   name: "ParcelaModal",
-  emit:["onRegistroExitoso"],
+  emits: ["onRegistroExitoso"],
   data() {
     return {
       tamaño: "",
@@ -82,29 +90,27 @@ export default {
       lng: "",
       mensaje: "",
       success: false,
-      provincias:[],
-      filtroProvincias: "",
-      provinciasFiltradas:[],
+      provincias: [],
       provinciaBusqueda: "",
-
     };
   },
   methods: {
-    async obtenerProvincias(){
+    async obtenerProvincias() {
       try {
-        const response = await axios.get("http://localhost:5000/api/parcela/provincias");
+        const response = await axios.get(`${BASE_URL}api/parcela/provincias`);
         this.provincias = response.data;
-        this.provinciasFiltradas = response.data; 
       } catch (error) {
         console.error("Error al obtener provincias:", error);
       }
     },
-    filtrarProvincias(){
-      const searchTerm = this.provinciaBusqueda.toLowerCase().trim();
-      this.provinciasFiltradas = this.provincias.filter(p =>
-        p.nombre.toLowerCase().includes(searchTerm)
+
+    asignarProvinciaSeleccionada() {
+      const seleccionada = this.provincias.find(p =>
+        p.nombre.toLowerCase() === this.provinciaBusqueda.toLowerCase()
       );
+      this.idProvincia = seleccionada ? seleccionada.id : "";
     },
+
     obtenerUbicacion() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -123,21 +129,26 @@ export default {
         this.success = false;
       }
     },
+
     async registrarParcela() {
       if (!this.validarDatos()) return;
       try {
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:5000/api/parcela",
+          `${BASE_URL}api/parcela`,
           {
             idProvincia: this.idProvincia,
             latitud: this.lat,
             longitud: this.lng,
-            tamaño: this.tamaño
+            tamaño: this.tamaño,
           },
-          { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
         );
-
         this.mensaje = "Parcela registrada correctamente.";
         this.success = true;
         this.$emit("onRegistroExitoso", response.data.parcela);
@@ -147,21 +158,27 @@ export default {
         this.success = false;
       }
     },
+
     validarDatos() {
       if (!this.tamaño || this.tamaño <= 0) {
-        this.mensaje = " El tamaño debe ser un número positivo.";
+        this.mensaje = "El tamaño debe ser un número positivo.";
         this.success = false;
         return false;
       }
       if (!this.lat || !this.lng || this.lat < -90 || this.lat > 90 || this.lng < -180 || this.lng > 180) {
-        this.mensaje = " Coordenadas inválidas. Verifica latitud y longitud.";
+        this.mensaje = "Coordenadas inválidas. Verifica latitud y longitud.";
+        this.success = false;
+        return false;
+      }
+      if (!this.idProvincia) {
+        this.mensaje = "Debes seleccionar una provincia válida.";
         this.success = false;
         return false;
       }
       return true;
     },
   },
-  created(){
+  created() {
     this.obtenerProvincias();
   }
 };

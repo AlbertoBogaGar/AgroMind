@@ -5,7 +5,7 @@ import Cultivos from '@/views/Cultivos.vue'
 import Clima from '@/views/Clima.vue'
 import DetalleCultivo from '@/views/DetalleCutivo.vue'
 import Asistente from '@/views/Asistente.vue'
-
+import Perfil from '@/views/Perfil.vue'
 const routes = [
   { path: '/', component: Auth },
   {
@@ -20,8 +20,9 @@ const routes = [
   },
   {
     path: '/clima',
-    name: Clima,
+    name: 'Clima',
     component: Clima,
+    meta: { requiresAuth: true },
   },
   {
     path: '/cultivo/:id',
@@ -33,7 +34,14 @@ const routes = [
     path: '/asistente',
     name: 'Asistente',
     component: Asistente,
+    meta: { requiresAuth: true },
   },
+  {
+    path:'/perfil',
+    name:'Perfil',
+    component:Perfil,
+    meta: { requiresAuth: true },
+  }
 ]
 
 const router = createRouter({
@@ -45,8 +53,10 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = !!localStorage.getItem('token')
 
   if (to.meta.requiresAuth && !isAuthenticated) {
+    
     next('/')
   } else {
+    
     next()
   }
 })

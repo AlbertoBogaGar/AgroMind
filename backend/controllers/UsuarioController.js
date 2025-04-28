@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const Usuario = require("../models/Usuario");
 const Parcela = require("../models/Parcela");
 
-exports.register = async (req, res) => {
+const register = async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
 
@@ -31,7 +31,7 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const usuario = await Usuario.findOne({ where: { email } });
@@ -56,3 +56,41 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Error en el servidor" });
   }
 };
+
+const obtenerPerfil = async (req, res) => {
+  try {
+    const usuario = await Usuario.findByPk(req.usuario.id, {
+      attributes: ["id", "nombre", "email"],
+    });
+    if (!usuario) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    res.json(usuario);
+  } catch (error) {
+    console.error("❌ Error al obtener perfil:", error);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+};
+
+const actualizarPerfil = async (req, res) => {
+  try {
+    const { nombre, email } = req.body;
+    const usuario = await Usuario.findByPk(req.usuario.id);
+
+    if (!usuario) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    usuario.nombre = nombre || usuario.nombre;
+    usuario.email = email || usuario.email;
+
+    await usuario.save();
+
+    res.json({ message: "Perfil actualizado correctamente", usuario });
+  } catch (error) {
+    console.error("❌ Error al actualizar perfil:", error);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+};
+
+module.exports ={actualizarPerfil,obtenerPerfil,login,register}

@@ -10,6 +10,7 @@ const weatherRoutes = require("./routes/weatherRoutes");
 const recomendacionRoutes = require("./routes/recomendacionRoutes");
 const asistente = require("./routes/asistenteRoutes")
 require("./models/associations");
+const actividadRoutes = require("./routes/actividadRoutes");
 
 
 
@@ -23,6 +24,7 @@ app.use("/api/tipoCultivo", tipoCultivoRoutes);
 app.use("/api/weather", weatherRoutes);
 app.use("/api/recomendacion", recomendacionRoutes);
 app.use("/api/asistente",asistente);
+app.use("/api/actividad", actividadRoutes);
 
 
 app.get("/", (req, res) => {

@@ -8,6 +8,7 @@ backend/.env
 frontend/node_modules/
 frontend/dist/
 frontend/*.log
+frontend/.env
 
 # Archivos comunes
 .DS_Store    # macOS

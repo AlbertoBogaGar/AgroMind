@@ -8,11 +8,11 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    // Verificar el token y extraer los datos
+    
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.usuario = decoded; // Guardar el usuario en req.usuario
+    req.usuario = decoded;
 
-    console.log("Usuario autenticado:", decoded); // Verifica si el id se obtiene correctamente
+    console.log("Usuario autenticado:", decoded); 
     console.log("Token recibido:", token);
     next();
   } catch (error) {
