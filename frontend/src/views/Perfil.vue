@@ -7,7 +7,7 @@
   
     <div class="flex-1 p-6 overflow-y-auto pb-24">
 
-      <h1 class="text-2xl font-semibold text-gray-800 mb-6">Editar Perfil y Parcela</h1>
+      <h1 class="text-2xl font-semibold text-gray-800 mb-6">Editar perfil y parcela</h1>
 
       
       <div class="bg-white p-6 rounded-lg shadow-md mb-6">

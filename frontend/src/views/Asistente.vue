@@ -5,7 +5,7 @@
       <div class="flex-1 p-6 overflow-y-auto">
         <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2">
           <i class="i-lucide-zap text-green-600"></i>
-          Recomendaciones IA
+          Asistente  virtual
         </h1>
         <p class="text-gray-600 mb-6">Pregúntame sobre tus cultivos, clima o técnicas agrícolas.</p>
         <SidebarMobile/>
@@ -20,7 +20,7 @@
           />
           <button
             @click="enviarPregunta"
-            class="mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
+            class="mt-4 bg-[#2e9e90] text-white font-semibold py-2 px-4 rounded"
           >
             Preguntar
           </button>

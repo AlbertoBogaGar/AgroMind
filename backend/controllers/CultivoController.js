@@ -2,7 +2,6 @@
 const Cultivo = require("../models/Cultivo");
 const Parcela = require("../models/Parcela");
 const TipoCultivo = require("../models/TipoCultivo");
-const jwt = require("jsonwebtoken");
 const { getRandomImageByQuery } = require("../services/unsplashServices");
 
 const crearCultivo = async (req, res) => {

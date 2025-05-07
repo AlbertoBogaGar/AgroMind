@@ -21,7 +21,7 @@ const Recomendaciones = sequelize.define(
     idUsuario: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      // Si tienes un modelo Usuario: references: { model: Usuario, key: "id" }
+  
     },
     fechaGeneracion: {
       type: DataTypes.DATEONLY,

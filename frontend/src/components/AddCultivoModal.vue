@@ -1,7 +1,7 @@
 <template>
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 class="text-lg font-bold mb-4 text-center">Añadir cultivo</h2>
+      <div class="bg-white p-6 rounded-lg shadow-lg w-96 m-4">
+        <h2 class="text-lg font-bold mb-4 text-center text-gray-600">Añadir cultivo</h2>
   
         <label class="block text-sm font-medium text-black">Tipo de cultivo:</label>
         <select v-model="idTipoCultivo" class="border p-2 w-full rounded mb-2 text-gray-600">

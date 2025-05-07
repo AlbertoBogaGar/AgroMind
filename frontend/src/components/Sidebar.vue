@@ -13,7 +13,7 @@
       </div>
 
       <div class="flex flex-col items-center gap-6 mt-6">
-        <!-- DASHBOARD -->
+      
         <router-link to="/dashboard" class="w-10 h-10 rounded-lg flex items-center justify-center"
           :class="$route.path === '/dashboard' ? 'bg-[#2e9e90] text-white' : 'text-gray-500 hover:bg-gray-100'">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
@@ -23,7 +23,7 @@
           </svg>
         </router-link>
 
-        <!-- CULTIVOS -->
+       
         <router-link to="/cultivos" class="w-10 h-10 rounded-lg flex items-center justify-center"
           :class="$route.path === '/cultivos' ? 'bg-[#2e9e90] text-white' : 'text-gray-500 hover:bg-gray-100'">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
@@ -34,7 +34,7 @@
           </svg>
         </router-link>
 
-        <!-- CLIMA -->
+        
         <router-link to="/clima" class="w-10 h-10 rounded-lg flex items-center justify-center"
           :class="$route.path === '/clima' ? 'bg-[#2e9e90] text-white' : 'text-gray-500 hover:bg-gray-100'">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
@@ -50,7 +50,7 @@
             <path d="M3 8h18M3 16h18"></path>
           </svg>
         </router-link>
-        <!-- PERFIL -->
+        
         <router-link to="/perfil" class="w-10 h-10 rounded-lg flex items-center justify-center"
           :class="$route.path === '/perfil' ? 'bg-[#2e9e90] text-white' : 'text-gray-500 hover:bg-gray-100'">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"

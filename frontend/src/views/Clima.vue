@@ -15,7 +15,7 @@
               </svg>
             </div>
             <div>
-              <h1 class="text-2xl font-semibold text-gray-800">Clima y Alertas</h1>
+              <h1 class="text-2xl font-semibold text-gray-800">Clima y alertas</h1>
               <p class="text-gray-500">Pronóstico y alertas meteorológicas</p>
             </div>
           </div>
@@ -25,12 +25,25 @@
           <div class="w-full md:w-1/2">
             <WeatherCard :meteorologia="meteorologia_actual"
               :provincia="parcela?.provincium?.nombre || 'Provincia desconocida'" :fecha="fechaActual"
-              :hora="horaActual" :ultimaActualizacion="ultimaActualizacion" @recargarClima="recargarClima" />
+              :hora="horaActual" :ultimaActualizacion="ultimaActualizacion"  />
           </div>
 
           <div class="w-full md:w-1/2">
             <SolGrafico v-if="salidaSol && puestaSol" :salidaSol="salidaSol" :puestaSol="puestaSol"
               :horaActual="horaActual" />
+          </div>
+        </div>
+        <div class="mb-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">Resumen de hoy</h3>
+          <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm text-gray-700">
+              <div><span class="font-semibold">Temperatura mínima:</span> {{ resumenHoy.temperatura_min }}°C</div>
+              <div><span class="font-semibold">Temperatura máxima:</span> {{ resumenHoy.temperatura_max }}°C</div>
+              <div><span class="font-semibold">Humedad:</span> {{ resumenHoy.humedad }}%</div>
+              <div><span class="font-semibold">Viento:</span> {{ resumenHoy.viento }} km/h</div>
+              <div><span class="font-semibold">Prob. lluvia:</span> {{ resumenHoy.prob_precipitacion }}%</div>
+              <div><span class="font-semibold">Duración luz:</span> {{ formatearDuracion(resumenHoy.duracion_luz) }}</div>
+            </div>
           </div>
         </div>
 
@@ -107,12 +120,12 @@ import Sidebar from "@/components/Sidebar.vue";
 import SidebarMobile from "@/components/SidebarMobile.vue";
 import axios from "axios";
 import AddCultivoModal from "@/components/AddCultivoModal.vue";
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export default {
   name: "Clima",
-  components: { WeatherCard, SolGrafico, Sidebar, SidebarMobile,AddCultivoModal },
+  components: { WeatherCard, SolGrafico, Sidebar, SidebarMobile, AddCultivoModal },
   data() {
     return {
       meteorologia_actual: {
@@ -131,10 +144,24 @@ export default {
       tiempoUltimaActualizacion: null,
       intervaloActualizacion: null,
       cargandoAlertas: false,
-      mostrarModal:false
+      mostrarModal: false,
+      resumenHoy: {
+        temperatura_min: null,
+        temperatura_max: null,
+        humedad: null,
+        viento: null,
+        prob_precipitacion: null,
+        duracion_sol: null
+      }
     };
   },
   methods: {
+    formatearDuracion(segundos) {
+  if (!segundos || isNaN(segundos)) return '0h 0min';
+  const horas = Math.floor(segundos / 3600);
+  const minutos = Math.floor((segundos % 3600) / 60);
+  return `${horas}h ${minutos}min`;
+},
     obtenerFechaActual() {
       let fecha = new Date();
       let format = { weekday: "long", day: "numeric", month: "long" };
@@ -154,14 +181,10 @@ export default {
       });
       this.parcela = res.data.parcela;
     },
-    async recargarClima() {
-      await this.obtenerMeteorologia();
-      this.tiempoUltimaActualizacion = new Date();
-      this.actualizarMensajeActualizacion();
-    },
+  
     async obtenerMeteorologia() {
-      let token = localStorage.getItem("token");
-      let res = await axios.get(`${BASE_URL}api/weather/current-live`, {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`${BASE_URL}api/weather/current-live`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       this.meteorologia_actual = res.data;
@@ -174,6 +197,17 @@ export default {
       });
       this.salidaSol = res.data.salidaSol;
       this.puestaSol = res.data.puestaSol;
+    },
+    async obtenerClimaDesdeBD() {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get(`${BASE_URL}api/weather/today`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        this.resumenHoy = res.data;
+      } catch (error) {
+        console.error("❌ Error al obtener clima de hoy desde BD:", error.message);
+      }
     },
     async obtenerAlertasClima() {
       this.cargandoAlertas = true;
@@ -203,9 +237,12 @@ export default {
   },
   async created() {
     await this.obtenerParcela();
-    await this.recargarClima();
     await this.obtenerSolInfo();
+    await this.obtenerClimaDesdeBD();
     await this.obtenerAlertasClima();
+    await this.obtenerMeteorologia();
+    this.tiempoUltimaActualizacion = new Date();
+    this.actualizarMensajeActualizacion();
   },
   beforeUnmount() {
     clearInterval(this.intervaloActualizacion);

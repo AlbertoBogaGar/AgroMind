@@ -59,7 +59,7 @@ const getClimaActual = async (req, res) => {
       });
   
       if (existe) {
-        return res.status(200).json({ mensaje: '⏩ Clima diario ya registrado.' });
+        return res.status(200).json({ mensaje: 'Clima diario ya registrado.' });
       }
   
       
@@ -118,10 +118,50 @@ const getClimaActual = async (req, res) => {
       res.status(500).json({ error: "Error interno del servidor" });
     }
   };
+  const getClimaHoy = async (req, res) => {
+    try {
+      const token = req.header("Authorization")?.replace("Bearer ", "");
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  
+      const parcela = await Parcela.findOne({ where: { idUsuario: decoded.id } });
+      if (!parcela) return res.status(404).json({ error: 'Parcela no encontrada' });
+  
+      const hoy = new Date().toISOString().split('T')[0];
+  
+      const datos = await Meteorologia.findOne({
+        where: {
+          idProvincia: parcela.idProvincia,
+          fecha: hoy
+        }
+      });
+  
+      if (!datos) {
+        return res.status(404).json({ error: 'No hay datos meteorológicos para hoy.' });
+      }
+  
+      res.json({
+        temperatura_min: datos.temperatura_min,
+        temperatura_max: datos.temperatura_max,
+        humedad: datos.humedad,
+        lluvia: datos.lluvia,
+        horas_precipitacion: datos.horas_precipitacion,
+        viento: datos.viento,
+        prob_precipitacion: datos.prob_precipitacion,
+        salida_sol: datos.salida_sol,
+        puesta_sol: datos.puesta_sol,
+        duracion_luz: datos.duracion_luz,
+        duracion_sol: datos.duracion_sol,
+        provincia: parcela.idProvincia
+      });
+    } catch (error) {
+      console.error("Error al obtener clima desde BD:", error.message);
+      res.status(500).json({ error: "Error interno al obtener clima desde la base de datos" });
+    }
+  };
   
   
   
 
 module.exports = {
-    guardarClimaDiario,getClimaActual,getSolInfo
+    guardarClimaDiario,getClimaActual,getSolInfo,getClimaHoy
 }; 

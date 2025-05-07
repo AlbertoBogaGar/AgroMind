@@ -23,6 +23,12 @@
             <h2 class="text-md font-semibold text-gray-800 mb-2">Información del cultivo</h2>
             <p class="text-gray-800"><strong>Tipo:</strong> {{ cultivo.tipoCultivo?.nombre }}</p>
             <p class="text-gray-800"><strong>Ciclo de vida:</strong> {{ cultivo.tipoCultivo?.cicloVida || 'No disponible' }} días</p>
+            <p class="text-gray-800"><strong>Mes de siembra:</strong> {{ cultivo.tipoCultivo?.mesSiembra || 'No disponible' }}</p>
+            <p class="text-gray-800"><strong>Mes de cosecha:</strong> {{ cultivo.tipoCultivo?.mesCosecha || 'No disponible' }}</p>
+            <p class="text-gray-800"><strong>Riego necesario:</strong> {{ cultivo.tipoCultivo?.riegoNecesario || 'No disponible' }}</p>
+            <p class="text-gray-800"><strong>Humedad óptima:</strong> {{ cultivo.tipoCultivo?.humedadOptima }}%</p>
+            <p class="text-gray-800"><strong>Temperatura óptima:</strong> {{ cultivo.tipoCultivo?.temperaturaOptima }}°C
+            </p>
             <p class="text-gray-800"><strong>Fecha de siembra:</strong> {{ formatearFecha(cultivo.fechaSiembra) }}</p>
             <p v-if="cultivo.estado === 'cosechado'" class="text-gray-800">
               <strong>Fecha de recolección:</strong> {{ formatearFecha(cultivo.fechaRecoleccion) }}
@@ -72,7 +78,7 @@
 
         <div class="mt-10 px-6" v-if="cultivo.estado !== 'cosechado'">
           <div class="bg-white rounded-lg p-6 shadow border">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Recomendaciones IA</h3>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Recomendaciones </h3>
 
             <div v-for="rec in recomendaciones" :key="rec.id" class="mb-4 border-l-4 pl-4" :class="{
               'border-red-500': rec.tipo === 'Grave',
@@ -106,7 +112,7 @@
       </div>
     </div>
 
-    <CrearActividadModal v-if="mostrarModal" :idCultivo="cultivo.id" @close="mostrarModal = false" @actividadCreada="obtenerActividades" />
+    <CrearActividadModal v-if="mostrarModal"  @close="mostrarModal = false" @actividadCreada="obtenerActividades" />
 
   </div>
 </template>
@@ -144,6 +150,17 @@ export default {
         console.error('Error al cargar actividades:', error.message);
       }
     },
+    async marcarComoRealizada(idActividad) {
+      try {
+        const token = localStorage.getItem('token');
+        await axios.put(`${BASE_URL}api/actividad/${idActividad}/completar`, {}, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        await this.obtenerActividades();
+      } catch (error) {
+        console.error('Error al marcar actividad como completada:', error.message);
+      }
+    },
     async obtenerRecomendaciones() {
       try {
         const token = localStorage.getItem('token');
@@ -154,17 +171,6 @@ export default {
         this.recomendaciones = res.data.recomendaciones || [];
       } catch (error) {
         console.error('Error al cargar recomendaciones:', error.message);
-      }
-    },
-    async marcarComoRealizada(idActividad) {
-      try {
-        const token = localStorage.getItem('token');
-        await axios.put(`${BASE_URL}api/actividad/${idActividad}/completar`, {}, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        await this.obtenerActividades();
-      } catch (error) {
-        console.error('Error al marcar actividad como completada:', error.message);
       }
     },
     async confirmarCosecha() {

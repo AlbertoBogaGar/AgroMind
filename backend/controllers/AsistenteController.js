@@ -1,4 +1,4 @@
-// controllers/iaController.js
+
 const { generarRespuestaLibreIA } = require("../services/geminiServices");
 
 const preguntarIA = async (req, res) => {

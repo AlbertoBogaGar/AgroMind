@@ -1,13 +1,9 @@
 <template>
-  <div>
-    
+  <div >
     <div class="md:hidden mb-4">
       <div class="bg-[#2e9e90] rounded-lg p-6 text-white relative">
        
-        <button @click="emitirRecarga"
-                class="absolute top-2 right-2 text-xs underline text-white hover:text-gray-200">
-          Recargar
-        </button>
+
 
         <p class="text-sm font-medium mb-2">{{ provincia }}</p>
         <div class="flex items-end gap-2 mb-2">
@@ -57,10 +53,6 @@
     <div class="hidden md:flex gap-4">
       <div class="w-full bg-[#2e9e90] rounded-lg p-6 text-white relative">
         
-        <button @click="emitirRecarga"
-                class="absolute top-2 right-2 text-xs underline text-white hover:text-gray-200">
-          Recargar
-        </button>
 
         <p class="text-sm font-medium mb-2">{{ provincia }}</p>
         <div class="flex items-end gap-2 mb-2">
@@ -110,11 +102,6 @@ export default {
     hora: String,
     ultimaActualizacion: String
   },
-  emits: ["recargarClima"],
-  methods: {
-    emitirRecarga() {
-      this.$emit("recargarClima");
-    }
-  }
+
 };
 </script>

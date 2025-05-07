@@ -6,7 +6,6 @@ const Provincia = sequelize.define(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     nombre: { type: DataTypes.STRING, allowNull: false },
-    idAemet: { type: DataTypes.INTEGER, allowNull: false },
   },
   { tableName: "provincia", timestamps: false }
 );

@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white p-4 rounded-lg shadow-md w-full max-w-xl">
-    <canvas ref="canvas"></canvas>
+    <canvas ref="canvas" style="max-height: 252px; min-height: 252px"></canvas>
   </div>
 </template>
 

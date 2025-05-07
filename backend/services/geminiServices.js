@@ -1,4 +1,3 @@
-// services/geminiService.js
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require("dotenv").config();
 
@@ -42,7 +41,7 @@ ${JSON.stringify(clima, null, 2)}
 
     return JSON.parse(jsonClean);
   } catch (error) {
-    console.error("❌ Error al generar contenido con Gemini:", error.message);
+    console.error("Error al generar contenido con Gemini:", error.message);
     throw error;
   }
 };
@@ -80,7 +79,7 @@ ${JSON.stringify(forecastData, null, 2)}
 
     return JSON.parse(jsonClean);
   } catch (error) {
-    console.error("❌ Error al generar alertas con Gemini:", error.message);
+    console.error("Error al generar alertas con Gemini:", error.message);
     return [];
   }
 };
@@ -99,7 +98,7 @@ Responde siempre de forma clara, profesional y directa.`;
     return response.text();
   } catch (error) {
     console.error(
-      "❌ Error al generar respuesta libre con Gemini:",
+      "Error al generar respuesta libre con Gemini:",
       error.message
     );
     throw error;

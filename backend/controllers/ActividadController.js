@@ -6,12 +6,13 @@ const obtenerActividadesPorCultivo = async (req, res) => {
 
     const actividades = await Actividad.findAll({
       where: { idCultivo },
+      where:{estado:'pendiente'},
       order: [['fechaSugerida', 'ASC']]
     });
 
     res.json(actividades);
   } catch (error) {
-    console.error("❌ Error al obtener actividades:", error.message);
+    console.error("Error al obtener actividades:", error.message);
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
@@ -35,7 +36,7 @@ const crearActividad = async (req, res) => {
     res.status(201).json({ message: "Actividad creada", actividad: nuevaActividad });
 
   } catch (error) {
-    console.error("❌ Error al crear actividad:", error.message);
+    console.error("Error al crear actividad:", error.message);
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
@@ -59,9 +60,23 @@ const completarActividad = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+const obtenerTodasActividades = async (req, res) => {
+  try {
+    const actividades = await Actividad.findAll({
+      where:{estado:'pendiente'},
+      order: [['fechaSugerida', 'ASC']]
+    });
+
+    res.json(actividades);
+  } catch (error) {
+    console.error("❌ Error al obtener todas las actividades:", error.message);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
 
 module.exports = {
   obtenerActividadesPorCultivo,
   crearActividad,
-  completarActividad
+  completarActividad,
+  obtenerTodasActividades
 };
