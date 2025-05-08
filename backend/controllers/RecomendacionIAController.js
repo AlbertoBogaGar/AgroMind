@@ -18,7 +18,9 @@ const obtenerRecomendaciones = async (req, res) => {
 
    
     const cultivos = await Cultivo.findAll({
-      where: { idParcela: parcela.id },
+      where: { idParcela: parcela.id,
+        estado:'activo'
+      },
       include: { model: TipoCultivo, as: "tipoCultivo" }
     });
 

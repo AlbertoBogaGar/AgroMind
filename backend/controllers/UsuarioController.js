@@ -43,7 +43,7 @@ const login = async (req, res) => {
     const parcela = await Parcela.findOne({ where: { idUsuario: usuario.id } });
 
     const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET, {
-      expiresIn: "24h",
+      expiresIn: "5h",
     });
 
     res.json({

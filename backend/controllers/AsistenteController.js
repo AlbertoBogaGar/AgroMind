@@ -11,7 +11,7 @@ const preguntarIA = async (req, res) => {
     const respuesta = await generarRespuestaLibreIA(pregunta);
     res.json({ respuesta });
   } catch (error) {
-    console.error("❌ Error al consultar a Gemini:", error.message);
+    console.error("Error al consultar a Gemini:", error.message);
     res.status(500).json({ error: "Error al generar la respuesta con Gemini." });
   }
 };

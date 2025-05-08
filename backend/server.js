@@ -12,8 +12,6 @@ const asistente = require("./routes/asistenteRoutes")
 require("./models/associations");
 const actividadRoutes = require("./routes/actividadRoutes");
 
-
-
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -25,7 +23,6 @@ app.use("/api/weather", weatherRoutes);
 app.use("/api/recomendacion", recomendacionRoutes);
 app.use("/api/asistente",asistente);
 app.use("/api/actividad", actividadRoutes);
-
 
 app.get("/", (req, res) => {
     res.send("API AgroMind funcionando ");
