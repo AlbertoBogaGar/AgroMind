@@ -7,11 +7,11 @@ const { getRandomImageByQuery } = require("../services/unsplashServices");
 
 const formatTime = (timeStr) => {
   if (!timeStr) return null;
-  // If the time is in ISO format (contains T), extract just the time part
+  
   if (timeStr.includes('T')) {
     return timeStr.split('T')[1].substring(0, 8);
   }
-  // If it's already in HH:mm:ss format, return as is
+  
   return timeStr;
 };
 
@@ -28,9 +28,9 @@ const crearCultivo = async (req, res) => {
     const nuevoCultivo = await Cultivo.create({
       idTipoCultivo,
       idParcela: parcela.id,
-      fechaSiembra: fechaSiembra ? fechaSiembra.split('T')[0] : new Date().toISOString().split('T')[0],
-      fechaRecoleccion: fechaRecoleccion ? fechaRecoleccion.split('T')[0] : null,
-      estado,
+      fechaSiembra: formatTime(fechaSiembra),
+      fechaRecoleccion: formatTime(fechaRecoleccion),
+      estado: estado
     });
 
     res.status(201).json(nuevoCultivo);
