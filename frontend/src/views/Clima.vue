@@ -206,7 +206,7 @@ export default {
         });
         this.resumenHoy = res.data;
       } catch (error) {
-        console.error("❌ Error al obtener clima de hoy desde BD:", error.message);
+        console.error("Error al obtener clima de hoy desde BD:", error.message);
       }
     },
     async obtenerAlertasClima() {

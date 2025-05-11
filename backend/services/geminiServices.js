@@ -6,7 +6,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const generarRecomendacionesCultivo = async (cultivos, clima) => {
   try {
     const model = genAI.getGenerativeModel({
-      model: "models/gemini-1.5-pro",
+      model: "models/gemini-1.5-flash"
     });
 
     const prompt = `
@@ -48,7 +48,7 @@ ${JSON.stringify(clima, null, 2)}
 const generarAlertasClima = async (forecastData) => {
   try {
     const model = genAI.getGenerativeModel({
-      model: "models/gemini-1.5-pro",
+      model: "models/gemini-1.5-flash"
     });
 
     const prompt = `
@@ -86,7 +86,7 @@ ${JSON.stringify(forecastData, null, 2)}
 
 const generarRespuestaLibreIA = async (pregunta) => {
   try {
-    const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-pro" });
+    const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-flash" });
 
     const contexto = `Eres un asistente agrícola experto llamado AgroMind. Ayudas a agricultores a resolver dudas sobre cultivos, clima, técnicas agrícolas, productividad, enfermedades, y todo lo relacionado con el trabajo en el campo. Responde de manera clara, profesional y directa. Si el usuario pregunta algo que no tenga relación con la agricultura, responde amablemente que no puedes ayudar en ese tema.
 Responde siempre de forma clara, profesional y directa.`;

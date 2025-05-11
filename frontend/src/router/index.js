@@ -6,6 +6,8 @@ import Clima from '@/views/Clima.vue'
 import DetalleCultivo from '@/views/DetalleCutivo.vue'
 import Asistente from '@/views/Asistente.vue'
 import Perfil from '@/views/Perfil.vue'
+import Error404 from '@/views/404.vue'
+
 const routes = [
   { path: '/', component: Auth },
   {
@@ -17,6 +19,7 @@ const routes = [
     path: '/cultivos',
     name: 'Cultivos',
     component: Cultivos,
+    meta: { requiresAuth: true },
   },
   {
     path: '/clima',
@@ -41,6 +44,11 @@ const routes = [
     name:'Perfil',
     component:Perfil,
     meta: { requiresAuth: true },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: Error404
   }
 ]
 

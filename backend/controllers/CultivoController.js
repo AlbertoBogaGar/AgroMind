@@ -2,6 +2,8 @@
 const Cultivo = require("../models/Cultivo");
 const Parcela = require("../models/Parcela");
 const TipoCultivo = require("../models/TipoCultivo");
+const Recomendacion = require("../models/Recomendaciones")
+const Actividad = require("../models/Actividad")
 const { getRandomImageByQuery } = require("../services/unsplashServices");
 
 const crearCultivo = async (req, res) => {
@@ -102,10 +104,32 @@ const cosecharCultivo = async (req, res) => {
     res.status(500).json({ message: "Error al cosechar cultivo" });
   }
 };
+const eliminar = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await Actividad.destroy({ where: { idCultivo: id } });
+
+    await Recomendacion.destroy({ where: { idCultivo: id } });
+
+
+    const eliminado = await Cultivo.destroy({ where: { id } });
+
+    if (!eliminado) {
+      return res.status(404).json({ message: "Cultivo no encontrado." });
+    }
+
+    res.json({ message: "Cultivo eliminado correctamente." });
+  } catch (error) {
+    console.error("Error al eliminar cultivo:", error.message);
+    res.status(500).json({ message: "Error al eliminar cultivo." });
+  }
+};
 
 module.exports = {
   obtenerCultivos,
   crearCultivo,
   obtenerCultivoPorId,
-  cosecharCultivo
+  cosecharCultivo,
+  eliminar
 };

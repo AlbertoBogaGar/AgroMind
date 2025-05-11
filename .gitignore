@@ -4,6 +4,7 @@ backend/npm-debug.log
 backend/yarn-error.log
 backend/.env*.log
 backend/.env
+backend/sonar-project.properties
 # Frontend (Vue.js)
 frontend/node_modules/
 frontend/dist/
@@ -24,3 +25,4 @@ Thumbs.db    # Windows
 #globales
 .env
 *.log
+sonar-project.properties 

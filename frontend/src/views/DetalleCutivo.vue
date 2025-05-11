@@ -18,12 +18,12 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-          
+
           <div class="bg-white rounded-lg p-4 shadow border">
             <h2 class="text-md font-semibold text-gray-800 mb-2">Información del cultivo</h2>
             <p class="text-gray-800"><strong>Tipo:</strong> {{ cultivo.tipoCultivo?.nombre }}</p>
             <p class="text-gray-800"><strong>Ciclo de vida:</strong> {{ cultivo.tipoCultivo?.cicloVida || 'No disponible' }} días</p>
-            <p class="text-gray-800"><strong>Mes de siembra:</strong> {{ cultivo.tipoCultivo?.mesSiembra || 'No disponible' }}</p>
+            <p class="text-gray-800"><strong>Mes de siembra:</strong> {{ cultivo.tipoCultivo?.mesSiembra || 'No  disponible' }}</p>
             <p class="text-gray-800"><strong>Mes de cosecha:</strong> {{ cultivo.tipoCultivo?.mesCosecha || 'No disponible' }}</p>
             <p class="text-gray-800"><strong>Riego necesario:</strong> {{ cultivo.tipoCultivo?.riegoNecesario || 'No disponible' }}</p>
             <p class="text-gray-800"><strong>Humedad óptima:</strong> {{ cultivo.tipoCultivo?.humedadOptima }}%</p>
@@ -35,29 +35,37 @@
             </p>
           </div>
 
-     
+
           <div class="bg-white rounded-lg p-4 shadow border" style="height: 250px; overflow-y: auto;">
             <div class="flex justify-between items-center mb-2">
               <h2 class="text-md font-semibold text-gray-800">Actividades</h2>
-              <button v-if="cultivo.id" @click="mostrarModal = true" class="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 rounded">
-    + Añadir
-  </button>
+              <button v-if="cultivo.id" @click="mostrarModal = true"
+                class="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 rounded">
+                + Añadir
+              </button>
             </div>
 
             <div v-if="actividades.length">
-              <div v-for="actividad in actividades" :key="actividad.id" class="flex justify-between items-center mb-2 p-2 bg-white rounded shadow-sm">
+              <div v-for="actividad in actividades" :key="actividad.id"
+                class="flex justify-between items-center mb-2 p-2 bg-white rounded shadow-sm">
                 <div>
                   <p :class="actividad.estado === 'completada' ? 'line-through text-gray-400' : 'text-gray-800'">
                     {{ actividad.titulo }}
                   </p>
                   <p class="text-xs text-gray-400">{{ formatearFecha(actividad.fechaSugerida) }}</p>
                 </div>
-                <button v-if="actividad.estado === 'pendiente'" @click="marcarComoRealizada(actividad.id)"
-                  class="bg-yellow-500 hover:bg-green-600 text-white text-xs px-2 py-1 rounded">
-                  Completar
-                </button>
-                <span v-else class="text-green-500 text-xs font-semibold">Hecha</span>
+                <div class="flex gap-2">
+                  <button v-if="actividad.estado === 'pendiente'" @click="marcarComoRealizada(actividad.id)"
+                    class="bg-yellow-500 hover:bg-green-600 text-white text-xs px-2 py-1 rounded">
+                    Completar
+                  </button>
+                  <button @click="eliminarActividad(actividad.id)"
+                    class="bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded">
+                    Eliminar
+                  </button>
+                </div>
               </div>
+
             </div>
 
             <p v-else class="text-sm text-gray-500">No hay actividades aún.</p>
@@ -65,19 +73,20 @@
 
         </div>
 
- 
+
         <div class="mt-6">
           <div class="bg-white rounded-lg p-4 shadow border">
             <h2 class="text-md font-semibold text-gray-800 mb-2">Días para cosecha</h2>
             <div class="w-full bg-gray-200 h-2 rounded-full mb-1">
-              <div class="bg-[#2e9e90] h-2 rounded-full" :style="{ width: cultivo.estado === 'cosechado' ? '100%' : progreso + '%' }"></div>
+              <div class="bg-[#2e9e90] h-2 rounded-full"
+                :style="{ width: cultivo.estado === 'cosechado' ? '100%' : progreso + '%' }"></div>
             </div>
             <p class="text-sm text-right text-gray-500">{{ diasRestantes }} días restantes</p>
           </div>
         </div>
 
-        <div class="mt-10 px-6" v-if="cultivo.estado !== 'cosechado'">
-          <div class="bg-white rounded-lg p-6 shadow border">
+        <div class="mt-10 " v-if="cultivo.estado !== 'cosechado'">
+          <div class="bg-white rounded-lg p-4 shadow border">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Recomendaciones </h3>
 
             <div v-for="rec in recomendaciones" :key="rec.id" class="mb-4 border-l-4 pl-4" :class="{
@@ -107,12 +116,16 @@
           </button>
 
           <p v-else class="text-green-700 font-semibold">Este cultivo ya ha sido cosechado.</p>
+          <button @click="eliminarCultivo" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded ml-4">
+            Eliminar cultivo
+          </button>
         </div>
+
 
       </div>
     </div>
 
-    <CrearActividadModal v-if="mostrarModal"  @close="mostrarModal = false" @actividadCreada="obtenerActividades" />
+    <CrearActividadModal v-if="mostrarModal" @close="mostrarModal = false" @actividadCreada="obtenerActividades" />
 
   </div>
 </template>
@@ -126,7 +139,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export default {
   name: 'DetalleCultivo',
-  components: { Sidebar,CrearActividadModal },
+  components: { Sidebar, CrearActividadModal },
   data() {
     return {
       cultivo: {},
@@ -138,6 +151,37 @@ export default {
     };
   },
   methods: {
+    async eliminarActividad(idActividad) {
+  const confirmar = confirm("¿Seguro que deseas eliminar esta actividad?");
+  if (!confirmar) return;
+
+  try {
+    const token = localStorage.getItem("token");
+    await axios.delete(`${BASE_URL}api/actividad/${idActividad}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    this.obtenerActividades(); 
+  } catch (error) {
+    console.error("Error al eliminar la actividad:", error.message);
+  }
+},
+    async eliminarCultivo() {
+      const confirmar = confirm("¿Seguro que quieres eliminar este cultivo? Esta acción no se puede deshacer.");
+      if (!confirmar) return;
+
+      try {
+        const token = localStorage.getItem('token');
+        await axios.delete(`${BASE_URL}api/cultivo/eliminar/${this.cultivo.id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        alert("Cultivo eliminado correctamente.");
+        this.$router.push("/cultivos");
+      } catch (error) {
+        console.error("Error al eliminar cultivo:", error.message);
+        alert("Hubo un error al eliminar el cultivo.");
+      }
+    },
+
     async obtenerActividades() {
       try {
         const token = localStorage.getItem('token');

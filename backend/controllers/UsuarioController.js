@@ -7,14 +7,33 @@ const register = async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
 
+    
+    if (!nombre || nombre.trim().length < 2) {
+      return res.status(400).json({ message: "El nombre debe tener al menos 2 caracteres" });
+    }
+
+  
+    const emailRegex = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,24}$/;
+    if (!email || !emailRegex.test(email)) {
+      return res.status(400).json({ message: "El email no es válido" });
+    }
+
+   
+    if (!password || password.length < 6) {
+      return res.status(400).json({ message: "La contraseña debe tener al menos 6 caracteres" });
+    }
+
+    
     const usuarioExistente = await Usuario.findOne({ where: { email } });
     if (usuarioExistente) {
       return res.status(400).json({ message: "El correo ya está registrado" });
     }
 
+    // Hashear la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const usuario = await Usuario.create({
+    // Crear nuevo usuario
+    await Usuario.create({
       nombre,
       email,
       password: hashedPassword,
@@ -25,9 +44,10 @@ const register = async (req, res) => {
     });
   } catch (error) {
     console.error("Error en registro:", error);
-    res
-      .status(500)
-      .json({ message: "Error en el servidor", error: error.message });
+    res.status(500).json({
+      message: "Error en el servidor",
+      error: error.message,
+    });
   }
 };
 
@@ -67,7 +87,7 @@ const obtenerPerfil = async (req, res) => {
     }
     res.json(usuario);
   } catch (error) {
-    console.error("❌ Error al obtener perfil:", error);
+    console.error("Error al obtener perfil:", error);
     res.status(500).json({ message: "Error en el servidor" });
   }
 };
@@ -88,7 +108,7 @@ const actualizarPerfil = async (req, res) => {
 
     res.json({ message: "Perfil actualizado correctamente", usuario });
   } catch (error) {
-    console.error("❌ Error al actualizar perfil:", error);
+    console.error("Error al actualizar perfil:", error);
     res.status(500).json({ message: "Error en el servidor" });
   }
 };

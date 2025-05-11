@@ -57,7 +57,12 @@
 
             <div class="p-4">
               <div class="text-sm text-gray-500 mb-1">Tipo: {{ cultivo.tipoCultivo?.nombre }}</div>
-              <h4 class="font-semibold text-gray-800 mb-2">{{ cultivo.tipoCultivo?.nombre }}</h4>
+              <h4 class="font-semibold text-gray-800 mb-2">
+  {{ cultivo.tipoCultivo?.nombre }}
+  <span v-if="fechaValida(cultivo.fechaRecoleccion)">
+    {{ formatearFecha(cultivo.fechaRecoleccion) }}
+  </span>
+</h4>
 
               <div class="mb-2">
                 <div class="text-sm text-gray-500 mb-1">Días para cosecha</div>
@@ -131,6 +136,17 @@ export default {
 },
 
   methods: {
+    formatearFecha(fecha) {
+    if (!fecha || fecha === '0000-00-00') return '';
+    return new Date(fecha).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+  },
+  fechaValida(fecha) {
+    return fecha && fecha !== '0000-00-00';
+  },
     async obtenerCultivos() {
       try {
         const token = localStorage.getItem("token");

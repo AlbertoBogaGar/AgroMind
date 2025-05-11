@@ -81,7 +81,7 @@ export default {
 
       if (this.password.length < 4) {
         this.errores.password = true;
-        this.mensaje = "La contraseña debe tener al menos 4 caracteres";
+        this.mensaje = "La contraseña debe tener al menos 6 caracteres";
         valido = false;
       }
 

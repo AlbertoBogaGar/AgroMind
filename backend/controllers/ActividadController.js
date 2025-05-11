@@ -8,6 +8,7 @@ const obtenerActividadesPorCultivo = async (req, res) => {
     const token = req.header("Authorization")?.replace("Bearer ", "");
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const idUsuario = decoded.id;
+    const { idCultivo } = req.params;
     
 
     const parcela = await Parcela.findOne({ where: { idUsuario } });
@@ -20,7 +21,7 @@ const obtenerActividadesPorCultivo = async (req, res) => {
     const idsCultivosUsuario = cultivos.map((c) => c.id);
 
     const actividades = await Actividad.findAll({
-      where: { idCultivo: idsCultivosUsuario, estado: "pendiente" },
+      where: { idCultivo: idCultivo, estado: "pendiente" },
       order: [["fechaSugerida", "ASC"]],
     });
 
@@ -99,10 +100,26 @@ const obtenerTodasActividades = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+const eliminar = async (req, res) => {
+  try {
+    const { idActividad } = req.params;
+    const eliminada = await Actividad.destroy({ where: { id: idActividad } });
+
+    if (!eliminada) {
+      return res.status(404).json({ message: "Actividad no encontrada." });
+    }
+
+    res.json({ message: "Actividad eliminada correctamente." });
+  } catch (error) {
+    console.error("Error al eliminar actividad:", error.message);
+    res.status(500).json({ message: "Error al eliminar actividad." });
+  }
+};
 
 module.exports = {
   obtenerActividadesPorCultivo,
   crearActividad,
   completarActividad,
   obtenerTodasActividades,
+  eliminar
 };
