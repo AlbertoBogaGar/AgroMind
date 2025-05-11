@@ -28,7 +28,7 @@ const crearCultivo = async (req, res) => {
     const nuevoCultivo = await Cultivo.create({
       idTipoCultivo,
       idParcela: parcela.id,
-      fechaSiembra: fechaSiembra ? fechaSiembra.split('T')[0] : null,
+      fechaSiembra: fechaSiembra ? fechaSiembra.split('T')[0] : new Date().toISOString().split('T')[0],
       fechaRecoleccion: fechaRecoleccion ? fechaRecoleccion.split('T')[0] : null,
       estado,
     });

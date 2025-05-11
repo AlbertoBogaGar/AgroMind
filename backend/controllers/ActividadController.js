@@ -5,11 +5,11 @@ const Cultivo = require("../models/Cultivo");
 
 const formatTime = (timeStr) => {
   if (!timeStr) return null;
-  // If the time is in ISO format (contains T), extract just the time part
+  
   if (timeStr.includes('T')) {
     return timeStr.split('T')[1].substring(0, 8);
   }
-  // If it's already in HH:mm:ss format, return as is
+  
   return timeStr;
 };
 
@@ -110,7 +110,7 @@ const obtenerTodasActividades = async (req, res) => {
       order: [["fechaSugerida", "ASC"]],
     });
 
-    // Format dates in the response
+
     const actividadesFormateadas = actividades.map(actividad => ({
       ...actividad.toJSON(),
       fechaSugerida: formatTime(actividad.fechaSugerida)
