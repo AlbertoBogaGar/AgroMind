@@ -107,7 +107,7 @@ const cosecharCultivo = async (req, res) => {
     }
 
     cultivo.estado = "cosechado";
-    cultivo.fechaRecoleccion = formatTime(new Date().toISOString());
+    cultivo.fechaRecoleccion = new Date().toISOString().split('T')[0];
 
     await cultivo.save();
 
