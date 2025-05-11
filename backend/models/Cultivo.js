@@ -17,7 +17,7 @@ const Cultivo = sequelize.define(
       references: { model: Parcela, key: "id" },
     },
     fechaSiembra: { type: DataTypes.DATEONLY, allowNull: false },
-    fechaRecoleccion: { type: DataTypes.DATEONLY },
+    fechaRecoleccion: { type: DataTypes.DATEONLY, allowNull: true },
     estado: { type: DataTypes.STRING, allowNull: false },
   },
   { tableName: "cultivo", timestamps: false }
