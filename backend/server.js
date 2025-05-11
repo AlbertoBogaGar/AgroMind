@@ -43,6 +43,8 @@ sequelize.sync({ force: false })
     .catch(err => console.error("Error al sincronizar tablas:", err));
 
 const PORT = process.env.PORT || 5000;
+console.log("Justo antes del app.listen");
+
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
