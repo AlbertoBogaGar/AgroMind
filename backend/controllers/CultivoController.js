@@ -31,7 +31,7 @@ const crearCultivo = async (req, res) => {
       idTipoCultivo,
       idParcela: parcela.id,
       fechaSiembra: fechaSiembra,
-      fechaRecoleccion: fechaRecoleccion,
+      fechaRecoleccion: fechaRecoleccion || null,
       estado: estado
     });
 
