@@ -28,15 +28,15 @@ const crearCultivo = async (req, res) => {
     const nuevoCultivo = await Cultivo.create({
       idTipoCultivo,
       idParcela: parcela.id,
-      fechaSiembra: formatTime(fechaSiembra),
-      fechaRecoleccion: formatTime(fechaRecoleccion),
+      fechaSiembra: fechaSiembra ? fechaSiembra.split('T')[0] : null,
+      fechaRecoleccion: fechaRecoleccion ? fechaRecoleccion.split('T')[0] : null,
       estado,
     });
 
-    res.status(201).json({ message: "Cultivo registrado", cultivo: nuevoCultivo });
+    res.status(201).json(nuevoCultivo);
   } catch (error) {
     console.error("Error al crear cultivo:", error);
-    res.status(500).json({ message: "Error en el servidor" });
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
