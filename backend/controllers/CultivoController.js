@@ -25,11 +25,13 @@ const crearCultivo = async (req, res) => {
       return res.status(404).json({ message: "No se encontró una parcela para este usuario" });
     }
 
+    console.log(fechaSiembra);
+    
     const nuevoCultivo = await Cultivo.create({
       idTipoCultivo,
       idParcela: parcela.id,
-      fechaSiembra: formatTime(fechaSiembra),
-      fechaRecoleccion: formatTime(fechaRecoleccion),
+      fechaSiembra: fechaSiembra,
+      fechaRecoleccion: fechaRecoleccion,
       estado: estado
     });
 
