@@ -3,6 +3,16 @@ const jwt = require("jsonwebtoken");
 const  Parcela  = require("../models/Parcela");
 const Cultivo = require("../models/Cultivo");
 
+const formatTime = (timeStr) => {
+  if (!timeStr) return null;
+  // If the time is in ISO format (contains T), extract just the time part
+  if (timeStr.includes('T')) {
+    return timeStr.split('T')[1].substring(0, 8);
+  }
+  // If it's already in HH:mm:ss format, return as is
+  return timeStr;
+};
+
 const obtenerActividadesPorCultivo = async (req, res) => {
   try {
     const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -25,7 +35,13 @@ const obtenerActividadesPorCultivo = async (req, res) => {
       order: [["fechaSugerida", "ASC"]],
     });
 
-    res.json(actividades);
+    // Format dates in the response
+    const actividadesFormateadas = actividades.map(actividad => ({
+      ...actividad.toJSON(),
+      fechaSugerida: formatTime(actividad.fechaSugerida)
+    }));
+
+    res.json(actividadesFormateadas);
   } catch (error) {
     console.error("Error al obtener actividades:", error.message);
     res.status(500).json({ message: "Error interno del servidor" });
@@ -44,7 +60,7 @@ const crearActividad = async (req, res) => {
       idCultivo,
       titulo,
       descripcion,
-      fechaSugerida,
+      fechaSugerida: formatTime(fechaSugerida),
       estado: "pendiente",
     });
 
@@ -94,7 +110,13 @@ const obtenerTodasActividades = async (req, res) => {
       order: [["fechaSugerida", "ASC"]],
     });
 
-    res.json(actividades);
+    // Format dates in the response
+    const actividadesFormateadas = actividades.map(actividad => ({
+      ...actividad.toJSON(),
+      fechaSugerida: formatTime(actividad.fechaSugerida)
+    }));
+
+    res.json(actividadesFormateadas);
   } catch (error) {
     console.error("Error al obtener todas las actividades:", error.message);
     res.status(500).json({ message: "Error interno del servidor" });

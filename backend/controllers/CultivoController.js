@@ -1,10 +1,19 @@
-
 const Cultivo = require("../models/Cultivo");
 const Parcela = require("../models/Parcela");
 const TipoCultivo = require("../models/TipoCultivo");
 const Recomendacion = require("../models/Recomendaciones")
 const Actividad = require("../models/Actividad")
 const { getRandomImageByQuery } = require("../services/unsplashServices");
+
+const formatTime = (timeStr) => {
+  if (!timeStr) return null;
+  // If the time is in ISO format (contains T), extract just the time part
+  if (timeStr.includes('T')) {
+    return timeStr.split('T')[1].substring(0, 8);
+  }
+  // If it's already in HH:mm:ss format, return as is
+  return timeStr;
+};
 
 const crearCultivo = async (req, res) => {
   try {
@@ -19,8 +28,8 @@ const crearCultivo = async (req, res) => {
     const nuevoCultivo = await Cultivo.create({
       idTipoCultivo,
       idParcela: parcela.id,
-      fechaSiembra,
-      fechaRecoleccion,
+      fechaSiembra: formatTime(fechaSiembra),
+      fechaRecoleccion: formatTime(fechaRecoleccion),
       estado,
     });
 
@@ -56,6 +65,8 @@ const obtenerCultivos = async (req, res) => {
       const imagen = await getRandomImageByQuery(nombreCultivo);
       return {
         ...cultivo.toJSON(),
+        fechaSiembra: formatTime(cultivo.fechaSiembra),
+        fechaRecoleccion: formatTime(cultivo.fechaRecoleccion),
         imagen
       };
     }));
@@ -94,7 +105,7 @@ const cosecharCultivo = async (req, res) => {
     }
 
     cultivo.estado = "cosechado";
-    cultivo.fechaRecoleccion = new Date(); 
+    cultivo.fechaRecoleccion = formatTime(new Date().toISOString());
 
     await cultivo.save();
 
