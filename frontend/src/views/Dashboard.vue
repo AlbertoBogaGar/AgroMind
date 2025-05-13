@@ -110,7 +110,7 @@
                 <h3 class="text-xl font-semibold text-gray-800">Mis cultivos</h3>
                 <RouterLink to="cultivos" class="text-[#2e9e90] text-sm font-medium">Ver todos</RouterLink>
               </div>
-              <div class="grid grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <router-link v-for="cultivo in cultivosActivos" :key="cultivo.id" :to="`/cultivo/${cultivo.id}`"
                   class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition duration-200">
                   <div class="p-4">

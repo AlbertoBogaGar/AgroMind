@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-md p-8 space-y-3 rounded-xl dark:bg-gray-50 dark:text-gray-800 m-4">
+  <div class="w-full max-w-md p-8 space-y-3 rounded-xl bg-gray-50 text-gray-800 m-4">
     <h1 class="text-2xl font-bold text-center">{{ registrado ? "Registro" : "Iniciar Sesión" }}</h1>
     <p class="text-center text-red-500">{{ mensaje }}</p>
     <form @submit.prevent="registrado ? register() : login()" class="space-y-6">
