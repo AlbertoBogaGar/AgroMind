@@ -3,7 +3,7 @@
 
     <Sidebar @abrirModal="mostrarModal = true" />
     <AddCultivoModal v-if="mostrarModal" @close="mostrarModal = false" />
-    + <div class="flex-1 flex flex-col p-6 overflow-y-auto">
+    
 
 
       <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2">
@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 
 <script>
