@@ -3,7 +3,7 @@
 
     <Sidebar @abrirModal="mostrarModal = true" />
     <AddCultivoModal v-if="mostrarModal" @close="mostrarModal = false" />
-    <div class="flex-1 flex flex-col p-6 overflow-hidden">
+    + <div class="flex-1 flex flex-col p-6 overflow-y-auto">
 
 
       <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2">
@@ -22,10 +22,11 @@
             Preguntar
           </button>
         </div>
-
+        <div class="flex-1 overflow-y-auto">
         <div v-if="respuesta" class="bg-white rounded-lg shadow p-6">
           <h2 class="text-lg font-semibold text-gray-800 mb-2">Respuesta del asistente</h2>
           <p class="text-gray-700 whitespace-pre-line">{{ respuesta }}</p>
+        </div>
         </div>
       </div>
     </div>
