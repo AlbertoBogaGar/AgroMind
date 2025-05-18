@@ -1,6 +1,7 @@
 <template>
   <div class="bg-white p-4 rounded-lg shadow-md w-full max-w-xl">
-    <canvas ref="canvas" style="max-height: 252px; min-height: 252px"></canvas>
+    <canvas ref="canvas" class="w-full" style="height: 252px; max-width: 100%;"></canvas>
+
   </div>
 </template>
 
@@ -11,9 +12,9 @@ Chart.register(...registerables);
 export default {
   name: "SolGrafico",
   props: {
-    salidaSol: String,     
-    puestaSol: String,     
-    horaActual: String     
+    salidaSol: String,
+    puestaSol: String,
+    horaActual: String
   },
   mounted() {
     if (this.salidaSol && this.puestaSol && this.horaActual) {
@@ -34,12 +35,12 @@ export default {
     getColorScheme(actual, salida, puesta) {
       if (actual < salida) {
         return {
-          borderColor: "#94a3b8", 
+          borderColor: "#94a3b8",
           backgroundColor: "rgba(148, 163, 184, 0.2)"
         };
       } else if (actual > puesta) {
         return {
-          borderColor: "#334155", 
+          borderColor: "#334155",
           backgroundColor: "rgba(51, 65, 85, 0.2)"
         };
       } else {

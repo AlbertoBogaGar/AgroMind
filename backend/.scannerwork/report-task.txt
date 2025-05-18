@@ -2,5 +2,5 @@ projectKey=agromind
 serverUrl=http://localhost:9000
 serverVersion=25.5.0.107428
 dashboardUrl=http://localhost:9000/dashboard?id=agromind
-ceTaskId=4f5062cd-d3b1-4f74-b05e-00f482565880
-ceTaskUrl=http://localhost:9000/api/ce/task?id=4f5062cd-d3b1-4f74-b05e-00f482565880
+ceTaskId=ea19f114-208a-4f8e-bbe5-3706d288b4ba
+ceTaskUrl=http://localhost:9000/api/ce/task?id=ea19f114-208a-4f8e-bbe5-3706d288b4ba
