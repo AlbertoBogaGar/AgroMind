@@ -1,8 +1,10 @@
 <template>
-    <div class="flex w-full h-screen bg-gray-50">
+    <div class="flex w-full min-h-screen bg-gray-50 flex-col md:flex-row">
+
       <Sidebar @abrirModal="mostrarModal = true" />
       <AddCultivoModal v-if="mostrarModal" @close="mostrarModal = false" />
-      <div class="flex-1 p-6 overflow-y-auto">
+      <div class="flex-1 p-6">
+
         <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2">
           <i class="i-lucide-zap text-green-600"></i>
           Asistente  virtual
