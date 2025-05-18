@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full min-h-screen bg-gray-50 flex-col md:flex-row">
+  <div class="flex w-full min-h-screen bg-gray-50 flex-col md:flex-row m-4">
 
     <Sidebar @abrirModal="mostrarModal = true" />
     <AddCultivoModal v-if="mostrarModal" @close="mostrarModal = false" />
