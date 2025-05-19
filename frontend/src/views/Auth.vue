@@ -5,17 +5,17 @@
     <form @submit.prevent="registrado ? register() : login()" class="space-y-6">
       <div v-if="registrado" class="space-y-1 text-sm">
         <label for="nombre" class="block">Nombre</label>
-        <input v-model="nombre" type="text" name="nombre" id="nombre" placeholder="nombre" :class="['w-full px-4 py-3 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90]',
+        <input v-model="nombre" type="text" name="nombre" id="nombre" placeholder="Nombre" :class="['w-full px-4 py-3 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90]',
           errores.nombre ? 'border-red-500' : 'border-gray-300']">
       </div>
       <div class="space-y-1 text-sm">
         <label for="email" class="block">Email</label>
-        <input v-model="email" type="email" name="email" id="email" placeholder="email" :class="['w-full px-4 py-3 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90]',
+        <input v-model="email" type="email" name="email" id="email" placeholder="Email" :class="['w-full px-4 py-3 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90]',
           errores.email ? 'border-red-500' : 'border-gray-300']">
       </div>
       <div class="space-y-1 text-sm">
         <label for="password" class="block dark:text-gray-600">Contraseña</label>
-        <input v-model="password" type="password" name="password" id="password" placeholder="Password" :class="['w-full px-4 py-3 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90]',
+        <input v-model="password" type="password" name="password" id="password" placeholder="Contraseña" :class="['w-full px-4 py-3 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e9e90]',
           errores.password ? 'border-red-500' : 'border-gray-300']">
       </div>
       <button type="submit" class="block w-full p-3 text-center rounded-sm bg-[#2e9e90]">{{ registrado ? "Registrarse" :
