@@ -129,6 +129,13 @@ export default {
         this.mensaje = "Error: " + error.response?.data?.message || "Error al registrar";
       }
     }
-  }
+
+  },
+  mounted() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      this.$router.push("/dashboard");
+    }
+  },
 };
 </script>
