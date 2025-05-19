@@ -86,10 +86,9 @@
         </div>
 
         <div class="mt-10 " v-if="cultivo.estado !== 'cosechado'">
-          < class="bg-white rounded-lg p-4 shadow border">
+          <div class="bg-white rounded-lg p-4 shadow border">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Recomendaciones </h3>
 
-            <div v-if="recomendacionesIA.length" class="space-y-3">
             <div v-for="rec in recomendaciones" :key="rec.id" class="mb-4 border-l-4 pl-4" :class="{
               'border-red-500': rec.tipo === 'Grave',
               'border-yellow-500': rec.tipo === 'Media',
@@ -108,7 +107,6 @@
               <p class="text-sm text-gray-700 mt-1">{{ rec.descripcion }}</p>
             </div>
           </div>
-           <div v-else class="text-sm text-gray-500">Estamos consultando las recomendaciones...</div>
         </div>
 
         <div class="mt-6 ml-6">
