@@ -111,7 +111,7 @@ const obtenerTodasActividades = async (req, res) => {
       },
       include: {
         model: Cultivo,
-        attributes: ['id', 'idTipoCultivo'], // o más si necesitas
+        attributes: ['id', 'idTipoCultivo'], 
       },
       order: [["fechaSugerida", "ASC"]],
     });

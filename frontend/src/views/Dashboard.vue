@@ -54,7 +54,7 @@
                     <p :class="actividad.estado === 'completada' ? 'line-through text-gray-400' : 'text-gray-800'">
                       {{ actividad.titulo }}
                     </p>
-                    <small>{{ actividad.nombreCultivo }}</small>
+                    <small>{{ actividad.descripcion }}</small>
                     <p class="text-xs text-gray-400">{{ formatearFecha(actividad.fechaSugerida) }}</p>
                   </div>
                   <div class="flex gap-2">
@@ -190,7 +190,7 @@ export default {
   data() {
     return {
       saludo: "",
-      tieneParcela: localStorage.getItem("tieneParcela") === "true",
+      tieneParcela: false,
       parcela: {},
       fechaActual: this.obtenerFechaActual(),
       horaActual: this.obtenerHoraActual(),
@@ -289,8 +289,10 @@ export default {
         if (response.data.parcela) {
           this.parcela = response.data.parcela;
           this.tieneParcela = true;
+          localStorage.setItem("tieneParcela", "true");
         } else {
           this.tieneParcela = false;
+          localStorage.setItem("tieneParcela", "false");
         }
         await this.obtenerCultivos();
         await this.obtenerMeteorologia();
@@ -439,20 +441,18 @@ export default {
   },
 
 
-  async created() {
-    this.tieneParcela = localStorage.getItem("tieneParcela") === "true";
-    if (this.tieneParcela) {
-      await this.obtenerParcela();
-      this.tiempoUltimaActualizacion = new Date();
-      this.actualizarMensajeActualizacion();
-      this.obtenerRecomendaciones();
-      this.obtenerClimaDiario();
-      await this.obtenerActividades();
+async created() {
+  await this.obtenerParcela(); 
+  this.saludo = this.obtenerSaludo();
 
-    }
-    this.saludo = this.obtenerSaludo();
-
-  },
+  if (this.tieneParcela) {
+    this.tiempoUltimaActualizacion = new Date();
+    this.actualizarMensajeActualizacion();
+    await this.obtenerActividades();
+    this.obtenerRecomendaciones();
+    this.obtenerClimaDiario();
+  }
+},
   beforeUnmount() {
     clearInterval(this.intervaloActualizacion);
   }
