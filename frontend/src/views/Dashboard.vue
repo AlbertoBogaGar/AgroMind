@@ -273,6 +273,7 @@ export default {
     async actualizarEstadoParcela(parcela) {
       console.log("Estado parcela: " + parcela);
       this.tieneParcela = true;
+      localStorage.setItem("tieneParcela", "true");
       this.parcela = parcela;
       await this.obtenerParcela();
     },
@@ -434,6 +435,7 @@ export default {
 
 
   async created() {
+     this.tieneParcela = localStorage.getItem("tieneParcela") === "true";
     if (this.tieneParcela) {
       await this.obtenerParcela();
       this.tiempoUltimaActualizacion = new Date();
