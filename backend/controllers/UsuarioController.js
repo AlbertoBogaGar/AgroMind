@@ -124,6 +124,7 @@ const verificarToken = async (req, res) => {
 
     res.json({ valido: true });
   } catch (error) {
+    console.error("Error al verificar token:", error.message);
     res.status(401).json({ message: "Token inválido" });
   }
 };

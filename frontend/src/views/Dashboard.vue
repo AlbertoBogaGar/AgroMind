@@ -54,7 +54,7 @@
                     <p :class="actividad.estado === 'completada' ? 'line-through text-gray-400' : 'text-gray-800'">
                       {{ actividad.titulo }}
                     </p>
-                    <small>{{ actividad.descripcion }}</small>
+                    <small class="text-gray-500">{{ actividad.descripcion }}</small>
                     <p class="text-xs text-gray-400">{{ formatearFecha(actividad.fechaSugerida) }}</p>
                   </div>
                   <div class="flex gap-2">

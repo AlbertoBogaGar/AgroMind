@@ -37,7 +37,7 @@
           </datalist>
         </div>
 
-        <!-- Ubicación -->
+       
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Ubicación en Google Maps:</label>
           <div class="flex gap-2">
