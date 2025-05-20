@@ -110,3 +110,50 @@ describe("CultivoController", () => {
     expect(mockSave).toHaveBeenCalled();
   });
 });
+test("GET /api/cultivo/:id debe devolver el cultivo si pertenece al usuario", async () => {
+  const mockCultivo = {
+    id: 1,
+    fechaSiembra: "2024-05-01",
+    fechaRecoleccion: null,
+    estado: "activo",
+    tipoCultivo: { nombre: "Tomate", cicloVida: 90 },
+    parcela: { idUsuario: 1 }
+  };
+
+  const Cultivo = require("../models/Cultivo");
+  Cultivo.findByPk.mockResolvedValue(mockCultivo);
+
+  const res = await request(app).get("/api/cultivo/1");
+
+  expect(res.statusCode).toBe(200);
+  expect(res.body).toHaveProperty("id", 1);
+  expect(res.body).toHaveProperty("estado", "activo");
+});
+test("GET /api/cultivo/:id debe devolver 404 si el cultivo no existe", async () => {
+  const Cultivo = require("../models/Cultivo");
+  Cultivo.findByPk.mockResolvedValue(null);
+
+  const res = await request(app).get("/api/cultivo/999");
+
+  expect(res.statusCode).toBe(404);
+  expect(res.body.error).toBe("Cultivo no encontrado");
+});
+
+test("GET /api/cultivo/:id debe devolver 403 si el cultivo no pertenece al usuario", async () => {
+  const mockCultivo = {
+    id: 1,
+    estado: "activo",
+    tipoCultivo: { nombre: "Tomate", cicloVida: 90 },
+    parcela: { idUsuario: 999 } // distinto del usuario autenticado (que es 1)
+  };
+
+  const Cultivo = require("../models/Cultivo");
+  Cultivo.findByPk.mockResolvedValue(mockCultivo);
+
+  const res = await request(app).get("/api/cultivo/1");
+
+  expect(res.statusCode).toBe(403);
+  expect(res.body.error).toBe("Acceso no autorizado a este cultivo");
+});
+
+

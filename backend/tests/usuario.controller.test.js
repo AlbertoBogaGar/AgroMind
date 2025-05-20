@@ -166,3 +166,100 @@ describe('UsuarioController', () => {
     });
   });
 });
+test('devuelve 400 si el nombre es inválido', async () => {
+  const res = await request(app).post('/api/usuario/register').send({
+    nombre: 'A',
+    email: 'test@mail.com',
+    password: '123456'
+  });
+
+  expect(res.statusCode).toBe(400);
+  expect(res.body.message).toBe('El nombre debe tener al menos 2 caracteres');
+});
+test('devuelve 400 si el email es inválido', async () => {
+  const res = await request(app).post('/api/usuario/register').send({
+    nombre: 'Usuario',
+    email: 'correo-malo',
+    password: '123456'
+  });
+
+  expect(res.statusCode).toBe(400);
+  expect(res.body.message).toBe('El email no es válido');
+});
+test('devuelve 400 si la contraseña es demasiado corta', async () => {
+  const res = await request(app).post('/api/usuario/register').send({
+    nombre: 'Usuario',
+    email: 'test@mail.com',
+    password: '123'
+  });
+
+  expect(res.statusCode).toBe(400);
+  expect(res.body.message).toBe('La contraseña debe tener al menos 6 caracteres');
+});
+test('devuelve 500 si hay un error interno en login', async () => {
+  Usuario.findOne.mockImplementation(() => {
+    throw new Error('fallo interno');
+  });
+
+  const res = await request(app).post('/api/usuario/login').send({
+    email: 'fallo@mail.com',
+    password: '123456'
+  });
+
+  expect(res.statusCode).toBe(500);
+  expect(res.body.message).toBe('Error en el servidor');
+});
+test('devuelve 500 si hay un error en obtener perfil', async () => {
+  Usuario.findByPk.mockImplementation(() => {
+    throw new Error('Error de BD');
+  });
+
+  const res = await request(app).get('/api/usuario/perfil');
+
+  expect(res.statusCode).toBe(500);
+  expect(res.body.message).toBe('Error en el servidor');
+});
+test('devuelve 500 si hay un error al actualizar perfil', async () => {
+  Usuario.findByPk.mockImplementation(() => {
+    throw new Error('fallo actualización');
+  });
+
+  const res = await request(app).put('/api/usuario/perfil/actualizar').send({
+    nombre: 'Fallido'
+  });
+
+  expect(res.statusCode).toBe(500);
+  expect(res.body.message).toBe('Error en el servidor');
+});
+test('devuelve 401 si no se proporciona token', async () => {
+  const res = await request(app)
+    .get('/api/usuario/verificar-token') // agrega la ruta en tu router si no está
+    .set('Authorization', '');
+
+  expect(res.statusCode).toBe(401);
+  expect(res.body.message).toBe('Token no proporcionado');
+});
+test('devuelve 401 si el token es inválido', async () => {
+  jwt.verify.mockImplementation(() => {
+    throw new Error('token inválido');
+  });
+
+  const res = await request(app)
+    .get('/api/usuario/verificar-token')
+    .set('Authorization', 'Bearer token-falso');
+
+  expect(res.statusCode).toBe(401);
+  expect(res.body.message).toBe('Token inválido');
+});
+
+test('devuelve 401 si el usuario del token no existe', async () => {
+  jwt.verify.mockReturnValue({ id: 999 });
+  Usuario.findByPk.mockResolvedValue(null);
+
+  const res = await request(app)
+    .get('/api/usuario/verificar-token')
+    .set('Authorization', 'Bearer token-valido');
+
+  expect(res.statusCode).toBe(401);
+  expect(res.body.message).toBe('Usuario no válido');
+});
