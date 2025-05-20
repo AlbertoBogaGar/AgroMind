@@ -5,6 +5,7 @@ const Cultivo = require('./Cultivo');
 const TipoCultivo = require('./TipoCultivo');
 const Meteorologia = require('./MeteorologiaProvincias');
 const Recomendaciones = require('./Recomendaciones');
+const Actividad = require('./Actividad');
 
 
 Usuario.hasOne(Parcela, { foreignKey: 'idUsuario' });
@@ -29,3 +30,6 @@ Recomendaciones.belongsTo(Cultivo, { foreignKey: 'idCultivo' });
 
 Usuario.hasMany(Recomendaciones, { foreignKey: 'idUsuario' });
 Recomendaciones.belongsTo(Usuario, { foreignKey: 'idUsuario' });
+
+Actividad.belongsTo(Cultivo, { foreignKey: 'idCultivo' });
+Cultivo.hasMany(Actividad, { foreignKey: 'idCultivo' });

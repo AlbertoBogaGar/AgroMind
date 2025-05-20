@@ -100,20 +100,26 @@ const obtenerTodasActividades = async (req, res) => {
     const parcela = await Parcela.findOne({ where: { idUsuario } });
     if (!parcela)
       return res.status(404).json({ error: "Parcela no encontrada" });
+
     const cultivos = await Cultivo.findAll({ where: { idParcela: parcela.id } });
     const idsCultivosUsuario = cultivos.map((c) => c.id);
+
     const actividades = await Actividad.findAll({
       where: {
         idCultivo: idsCultivosUsuario,
         estado: "pendiente",
       },
+      include: {
+        model: Cultivo,
+        attributes: ['id', 'idTipoCultivo'], // o más si necesitas
+      },
       order: [["fechaSugerida", "ASC"]],
     });
 
-
     const actividadesFormateadas = actividades.map(actividad => ({
       ...actividad.toJSON(),
-      fechaSugerida: formatTime(actividad.fechaSugerida)
+      fechaSugerida: formatTime(actividad.fechaSugerida),
+      nombreCultivo: actividad.Cultivo?.idTipoCultivo 
     }));
 
     res.json(actividadesFormateadas);

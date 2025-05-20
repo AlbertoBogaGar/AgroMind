@@ -54,6 +54,7 @@
                     <p :class="actividad.estado === 'completada' ? 'line-through text-gray-400' : 'text-gray-800'">
                       {{ actividad.titulo }}
                     </p>
+                    <small>{{ actividad.nombreCultivo }}</small>
                     <p class="text-xs text-gray-400">{{ formatearFecha(actividad.fechaSugerida) }}</p>
                   </div>
                   <div class="flex gap-2">
@@ -208,7 +209,8 @@ export default {
         viento: null,
         estado: '',
       },
-      actividades: []
+      actividades: [],
+      
     };
   },
   computed: {
