@@ -112,5 +112,20 @@ const actualizarPerfil = async (req, res) => {
     res.status(500).json({ message: "Error en el servidor" });
   }
 };
+const verificarToken = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "Token no proporcionado" });
 
-module.exports ={actualizarPerfil,obtenerPerfil,login,register}
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const usuario = await Usuario.findByPk(decoded.id);
+
+    if (!usuario) return res.status(401).json({ message: "Usuario no válido" });
+
+    res.json({ valido: true });
+  } catch (error) {
+    res.status(401).json({ message: "Token inválido" });
+  }
+};
+
+module.exports ={actualizarPerfil,obtenerPerfil,login,register,verificarToken}

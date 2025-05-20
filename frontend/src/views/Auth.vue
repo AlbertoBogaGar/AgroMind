@@ -131,11 +131,25 @@ export default {
     }
 
   },
-  mounted() {
-    const token = localStorage.getItem("token");
-    if (token) {
+mounted() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return;
+  }
+
+  axios
+    .get(`${BASE_URL}api/auth/verificar-token`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then(() => {
       this.$router.push("/dashboard");
-    }
-  },
+    })
+    .catch(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("tieneParcela");
+    });
+}
 };
 </script>
