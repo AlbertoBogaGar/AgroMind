@@ -82,7 +82,12 @@ const obtenerCultivos = async (req, res) => {
 
 const obtenerCultivoPorId = async (req, res) => {
   try {
-    const cultivo = await Cultivo.findByPk(req.params.id, {
+      const token = req.header("Authorization")?.replace("Bearer ", "");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const idUsuario = decoded.id;
+
+    const { id } = req.params;
+    const cultivo = await Cultivo.findByPk(id, {
       include: [
         { model: TipoCultivo, as: 'tipoCultivo' },
         { model: Parcela }
@@ -90,6 +95,11 @@ const obtenerCultivoPorId = async (req, res) => {
     });
 
     if (!cultivo) return res.status(404).json({ error: "Cultivo no encontrado" });
+
+    if (cultivo.parcela.idUsuario !== idUsuario) {
+      return res.status(403).json({ error: "Acceso no autorizado a este cultivo" });
+    }
+
     res.json(cultivo);
   } catch (error) {
     console.error("Error al obtener cultivo:", error.message);
