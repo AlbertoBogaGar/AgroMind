@@ -3,6 +3,7 @@ const Parcela = require("../models/Parcela");
 const TipoCultivo = require("../models/TipoCultivo");
 const Recomendacion = require("../models/Recomendaciones")
 const Actividad = require("../models/Actividad")
+const jwt = require("jsonwebtoken");
 const { getRandomImageByQuery } = require("../services/unsplashServices");
 
 const formatTime = (timeStr) => {

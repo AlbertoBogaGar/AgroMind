@@ -34,7 +34,7 @@
             <div class="w-full md:w-1/2 flex flex-col h-full">
               <WeatherCard class="flex-1" :meteorologia="meteorologia_actual"
                 :provincia="parcela?.provincium?.nombre || 'Provincia desconocida'" :fecha="fechaActual"
-                :hora="horaActual" :ultimaActualizacion="ultimaActualizacion"  />
+                :hora="horaActual" :ultimaActualizacion="ultimaActualizacion" />
             </div>
 
 
@@ -49,24 +49,24 @@
               </div>
               <div v-if="actividades.length">
                 <div v-for="actividad in actividades" :key="actividad.id"
-                class="flex justify-between items-center mb-2 p-2 bg-white rounded shadow-sm">
-                <div>
-                  <p :class="actividad.estado === 'completada' ? 'line-through text-gray-400' : 'text-gray-800'">
-                    {{ actividad.titulo }}
-                  </p>
-                  <p class="text-xs text-gray-400">{{ formatearFecha(actividad.fechaSugerida) }}</p>
+                  class="flex justify-between items-center mb-2 p-2 bg-white rounded shadow-sm">
+                  <div>
+                    <p :class="actividad.estado === 'completada' ? 'line-through text-gray-400' : 'text-gray-800'">
+                      {{ actividad.titulo }}
+                    </p>
+                    <p class="text-xs text-gray-400">{{ formatearFecha(actividad.fechaSugerida) }}</p>
+                  </div>
+                  <div class="flex gap-2">
+                    <button v-if="actividad.estado === 'pendiente'" @click="marcarComoRealizada(actividad.id)"
+                      class="bg-yellow-500 hover:bg-green-600 text-white text-xs px-2 py-1 rounded">
+                      Completar
+                    </button>
+                    <button @click="eliminarActividad(actividad.id)"
+                      class="bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded">
+                      Eliminar
+                    </button>
+                  </div>
                 </div>
-                <div class="flex gap-2">
-                  <button v-if="actividad.estado === 'pendiente'" @click="marcarComoRealizada(actividad.id)"
-                    class="bg-yellow-500 hover:bg-green-600 text-white text-xs px-2 py-1 rounded">
-                    Completar
-                  </button>
-                  <button @click="eliminarActividad(actividad.id)"
-                    class="bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded">
-                    Eliminar
-                  </button>
-                </div>
-              </div>
               </div>
               <p v-else class="text-sm text-gray-500">No hay actividades aún.</p>
             </div>
@@ -77,7 +77,7 @@
             <div class="flex justify-between items-center mb-4">
               <h3 class="font-semibold text-gray-800">Recomendaciones </h3>
             </div>
-            
+
             <div v-if="recomendacionesIA.length" class="space-y-3">
               <div v-for="(reco, index) in recomendacionesIA.slice(0, 4)" :key="index"
                 class="flex justify-between items-start">
@@ -185,7 +185,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export default {
   name: "Dashboard",
-  components: { ParcelaModal, AddCultivoModal, WeatherCard, Sidebar, SidebarMobile,  CrearActividadModal },
+  components: { ParcelaModal, AddCultivoModal, WeatherCard, Sidebar, SidebarMobile, CrearActividadModal },
   data() {
     return {
       saludo: "",
@@ -219,19 +219,19 @@ export default {
 
   methods: {
     async eliminarActividad(idActividad) {
-  const confirmar = confirm("¿Seguro que deseas eliminar esta actividad?");
-  if (!confirmar) return;
+      const confirmar = confirm("¿Seguro que deseas eliminar esta actividad?");
+      if (!confirmar) return;
 
-  try {
-    const token = localStorage.getItem("token");
-    await axios.delete(`${BASE_URL}api/actividad/${idActividad}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    this.obtenerActividades(); 
-  } catch (error) {
-    console.error("Error al eliminar la actividad:", error.message);
-  }
-},
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(`${BASE_URL}api/actividad/${idActividad}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        this.obtenerActividades();
+      } catch (error) {
+        console.error("Error al eliminar la actividad:", error.message);
+      }
+    },
     obtenerSaludo() {
       const hora = new Date().getHours();
 
@@ -286,6 +286,9 @@ export default {
         console.log("Parcela recibida:", response.data);
         if (response.data.parcela) {
           this.parcela = response.data.parcela;
+          this.tieneParcela = true;
+        } else {
+          this.tieneParcela = false;
         }
         await this.obtenerCultivos();
         await this.obtenerMeteorologia();
@@ -435,7 +438,7 @@ export default {
 
 
   async created() {
-     this.tieneParcela = localStorage.getItem("tieneParcela") === "true";
+    this.tieneParcela = localStorage.getItem("tieneParcela") === "true";
     if (this.tieneParcela) {
       await this.obtenerParcela();
       this.tiempoUltimaActualizacion = new Date();
