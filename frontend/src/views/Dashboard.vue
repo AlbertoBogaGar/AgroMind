@@ -1,7 +1,7 @@
 <template>
   <div class="relative w-full h-screen bg-gray-50">
 
-    <ParcelaModal v-if="!tieneParcela" @onRegistroExitoso="actualizarEstadoParcela" />
+    <ParcelaModal v-if="tieneParcela === false" @onRegistroExitoso="actualizarEstadoParcela" />
 
     <div v-else class="flex h-screen">
 
@@ -190,7 +190,7 @@ export default {
   data() {
     return {
       saludo: "",
-      tieneParcela: false,
+      tieneParcela: null,
       parcela: {},
       fechaActual: this.obtenerFechaActual(),
       horaActual: this.obtenerHoraActual(),
@@ -299,6 +299,7 @@ export default {
 
       } catch (error) {
         console.error("Error al obtener la parcela:", error);
+         this.tieneParcela = false;
       }
     },
     async obtenerCultivos() {
