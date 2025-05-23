@@ -16,7 +16,7 @@
 
           <div class="flex justify-between items-center mb-4">
             <div>
-              <h1 class="text-2xl font-semibold text-gray-800">Hola, {{ saludo }}</h1>
+              <h1 class="text-2xl font-semibold text-gray-800">Hola, {{ saludo }} profesores</h1>
               <p class="text-gray-500">{{ fechaActual }}</p>
             </div>
             <div class="w-12 h-12 bg-[#e0f5f3] text-[#2e9e90] rounded-full flex items-center justify-center">

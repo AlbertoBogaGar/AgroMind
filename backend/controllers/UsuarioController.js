@@ -29,10 +29,10 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "El correo ya está registrado" });
     }
 
-    // Hashear la contraseña
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Crear nuevo usuario
+
     await Usuario.create({
       nombre,
       email,

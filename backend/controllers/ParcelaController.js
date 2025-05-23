@@ -73,7 +73,7 @@ const actualizarUbicacionParcela = async (req, res) => {
 
     res.json({ message: "Ubicación de la parcela actualizada correctamente.", parcela });
   } catch (error) {
-    console.error("❌ Error al actualizar ubicación de parcela:", error.message);
+    console.error("Error al actualizar ubicación de parcela:", error.message);
     res.status(500).json({ message: "Error al actualizar ubicación." });
   }
 };
